@@ -1,0 +1,3 @@
+integration:
+  stores:
+    uri: http://localhost:8081
