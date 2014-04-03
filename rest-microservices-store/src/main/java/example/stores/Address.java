@@ -20,6 +20,8 @@ import lombok.Value;
 import org.springframework.data.geo.Point;
 
 /**
+ * Value object to represent an {@link Address}.
+ * 
  * @author Oliver Gierke
  */
 @Value

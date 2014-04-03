@@ -37,6 +37,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
 /**
+ * Component initializing a hand full of Starbucks stores and persisting them through a {@link StoreRepository}.
+ * 
  * @author Oliver Gierke
  */
 @Slf4j
@@ -58,6 +60,13 @@ public class StoreInitializer {
 		log.info("Successfully imported {} stores.", repository.count());
 	}
 
+	/**
+	 * Reads a file {@code starbucks.csv} from the class path and parses it into {@link Store} instances about to
+	 * persisted.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public static List<Store> readStores() throws Exception {
 
 		ClassPathResource resource = new ClassPathResource("starbucks.csv");

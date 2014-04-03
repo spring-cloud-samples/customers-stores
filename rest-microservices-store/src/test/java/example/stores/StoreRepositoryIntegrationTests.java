@@ -31,6 +31,8 @@ import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
+ * Integration tests for {@link StoreRepository}.
+ * 
  * @author Oliver Gierke
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,7 +47,7 @@ public class StoreRepositoryIntegrationTests {
 	}
 
 	@Test
-	public void foo() {
+	public void findsStoresByLocation() {
 
 		Point location = new Point(-73.995146, 40.740337);
 		Store store = new Store("Foo", new Address("street", "city", "zip", location));

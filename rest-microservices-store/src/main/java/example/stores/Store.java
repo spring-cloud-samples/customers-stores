@@ -20,6 +20,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 /**
+ * Entity to represent a {@link Store}.
+ * 
  * @author Oliver Gierke
  */
 @Data

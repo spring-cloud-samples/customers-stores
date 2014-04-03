@@ -58,8 +58,8 @@
 
 	<repositories>
 		<repository>
-			<id>spring-libs-milestone</id>
-			<url>http://repo.spring.io/libs-milestone</url>
+			<id>spring-libs-snapshot</id>
+			<url>http://repo.spring.io/libs-snapshot</url>
 		</repository>
 	</repositories>
 

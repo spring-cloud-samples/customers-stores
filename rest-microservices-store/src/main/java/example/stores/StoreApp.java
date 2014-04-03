@@ -22,6 +22,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
 /**
+ * Spring configuration class main application bootstrap point.
+ * 
  * @author Oliver Gierke
  */
 @EnableAutoConfiguration

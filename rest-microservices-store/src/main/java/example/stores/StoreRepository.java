@@ -24,11 +24,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
+ * Repository interface for out-of-the-box paginating access to {@link Store}s and a query method to find stores by
+ * location and distance.
+ * 
  * @author Oliver Gierke
  */
 public interface StoreRepository extends PagingAndSortingRepository<Store, String> {
 
 	@RestResource(rel = "by-location")
-	Page<Store> findByAddressLocationNear(@Param("location") Point location, @Param("distance") Distance distance,
-			Pageable pageable);
+	Page<Store> findByAddressLocationNear(//
+			@Param("location") Point location, @Param("distance") Distance distance, Pageable pageable);
 }
