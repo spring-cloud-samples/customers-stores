@@ -20,7 +20,7 @@
 	</modules>
 	
 	<properties>
-		<spring-data-rest.version>2.1.0.M1</spring-data-rest.version>
+		<spring-data-rest.version>2.1.0.BUILD-SNAPSHOT</spring-data-rest.version>
 	</properties>
 
 	<dependencies>
