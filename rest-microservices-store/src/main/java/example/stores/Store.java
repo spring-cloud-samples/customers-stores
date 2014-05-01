@@ -18,6 +18,7 @@ package example.stores;
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Entity to represent a {@link Store}.
@@ -25,6 +26,7 @@ import org.springframework.data.annotation.Id;
  * @author Oliver Gierke
  */
 @Data
+@Document
 public class Store {
 
 	private final @Id String id;

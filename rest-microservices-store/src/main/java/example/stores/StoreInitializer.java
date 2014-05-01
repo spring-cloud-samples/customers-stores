@@ -32,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.index.GeospatialIndex;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
@@ -47,8 +46,6 @@ public class StoreInitializer {
 
 	@Autowired
 	public StoreInitializer(StoreRepository repository, MongoOperations operations) throws Exception {
-
-		operations.indexOps(Store.class).ensureIndex(new GeospatialIndex("address.location"));
 
 		if (repository.count() != 0) {
 			return;
@@ -78,12 +75,11 @@ public class StoreInitializer {
 		itemReader.setResource(resource);
 
 		// DelimitedLineTokenizer defaults to comma as its delimiter
-		DefaultLineMapper<Store> lineMapper = new DefaultLineMapper<Store>();
-
 		DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
 		tokenizer.setNames(line.split(","));
 		tokenizer.setStrict(false);
 
+		DefaultLineMapper<Store> lineMapper = new DefaultLineMapper<Store>();
 		lineMapper.setLineTokenizer(tokenizer);
 		lineMapper.setFieldSetMapper(StoreFieldSetMapper.INSTANCE);
 		itemReader.setLineMapper(lineMapper);
@@ -107,7 +103,7 @@ public class StoreInitializer {
 		return stores;
 	}
 
-	static enum StoreFieldSetMapper implements FieldSetMapper<Store> {
+	private static enum StoreFieldSetMapper implements FieldSetMapper<Store> {
 
 		INSTANCE;
 

@@ -18,6 +18,7 @@ package example.stores;
 import lombok.Value;
 
 import org.springframework.data.geo.Point;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 
 /**
  * Value object to represent an {@link Address}.
@@ -28,5 +29,5 @@ import org.springframework.data.geo.Point;
 public class Address {
 
 	private final String street, city, zip;
-	private final Point location;
+	private final @GeoSpatialIndexed Point location;
 }
