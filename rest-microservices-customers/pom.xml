@@ -9,11 +9,6 @@
 	</parent>
 
 	<artifactId>rest-microservices-customers</artifactId>
-	
-	<properties>
-		<spring-data-jpa.version>1.6.0.BUILD-SNAPSHOT</spring-data-jpa.version>
-		<spring-hateoas.version>0.10.0.TRAVERSON-SNAPSHOT</spring-hateoas.version>
-	</properties>
 
 	<dependencies>
 	
