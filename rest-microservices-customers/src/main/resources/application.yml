@@ -1,3 +1,21 @@
+server:
+  port: 9000
+
 integration:
   stores:
     uri: http://localhost:8081
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8080/v2/
+      default.defaultZone: http://localhost:8080/v2/
+
+---
+spring:
+  profiles: cloud
+eureka:
+  instance:
+    hostname: customers.23.21.254.2.xip.io
+    nonSecurePort: 80
+    

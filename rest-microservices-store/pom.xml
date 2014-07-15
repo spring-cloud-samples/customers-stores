@@ -10,28 +10,33 @@
 	
 	<artifactId>rest-microservices-store</artifactId>
 	
-	<properties>
-		<mongodb.version>2.12.1</mongodb.version>
-		<spring-data-mongodb.version>1.5.0.BUILD-SNAPSHOT</spring-data-mongodb.version>
-	</properties>
-	
 	<dependencies>
 	
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
+			<groupId>org.springframework.platform</groupId>
+			<artifactId>spring-platform-netflix-core</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-mongodb</artifactId>
+			<groupId>org.springframework.platform</groupId>
+			<artifactId>spring-platform-config-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 		
 		<dependency>
-			<groupId>org.springframework.batch</groupId>
-			<artifactId>spring-batch-core</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch</artifactId>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.netflix.eureka</groupId>
+			<artifactId>eureka-client</artifactId>
+		</dependency>
+
 	</dependencies>
 	
 </project>

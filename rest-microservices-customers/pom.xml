@@ -10,13 +10,18 @@
 
 	<artifactId>rest-microservices-customers</artifactId>
 	
-	<properties>
-		<spring-data-jpa.version>1.6.0.BUILD-SNAPSHOT</spring-data-jpa.version>
-		<spring-hateoas.version>0.10.0.TRAVERSON-SNAPSHOT</spring-hateoas.version>
-	</properties>
-
 	<dependencies>
 	
+		<dependency>
+			<groupId>org.springframework.platform</groupId>
+			<artifactId>spring-platform-netflix-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.platform</groupId>
+			<artifactId>spring-platform-config-client</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -28,9 +33,13 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>com.netflix.eureka</groupId>
+			<artifactId>eureka-client</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
-			<version>0.9.1</version>
 			<scope>runtime</scope>
 		</dependency>
 
