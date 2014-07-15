@@ -20,6 +20,7 @@
 	</modules>
 	
 	<properties>
+        <java.version>1.8</java.version>
 		<spring-data-releasetrain.version>Evans-BUILD-SNAPSHOT</spring-data-releasetrain.version>
 		<spring-platform.version>1.0.0.BUILD-SNAPSHOT</spring-platform.version>
 		<spring-data-rest.version>2.2.0.BUILD-SNAPSHOT</spring-data-rest.version>

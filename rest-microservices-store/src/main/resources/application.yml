@@ -1,0 +1,22 @@
+server:
+  port: 8081
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost/stores
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8080/v2/
+      default.defaultZone: http://localhost:8080/v2/
+
+---
+spring:
+  profiles: cloud
+eureka:
+  instance:
+    hostname: customers.23.21.254.2.xip.io
+    nonSecurePort: 80
+    
