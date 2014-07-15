@@ -26,8 +26,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
-import org.springframework.hateoas.hal.HalLinkDiscoverer;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -42,7 +40,6 @@ import org.springframework.web.client.RestTemplate;
 public class StoreIntegration {
 
 	private final Environment env;
-	private final HalLinkDiscoverer linkDiscoverer = new HalLinkDiscoverer();
 
 	private @Getter Link storesByLocationLink;
 
@@ -76,9 +73,7 @@ public class StoreIntegration {
 			log.info("Trying to access the stores system at {}…", storesUri);
 
 			Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
-			ResponseEntity<String> response = traverson.follow("stores", "search").toEntity(String.class);
-
-			this.storesByLocationLink = linkDiscoverer.findLinkWithRel("by-location", response.getBody());
+			this.storesByLocationLink = traverson.follow("stores", "search", "by-location").asLink();
 
 			log.info("Found stores-by-location link pointing to {}.", storesByLocationLink.getHref());
 

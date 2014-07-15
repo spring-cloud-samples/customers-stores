@@ -21,9 +21,10 @@
 	
 	<properties>
 		<spring-data-releasetrain.version>Evans-BUILD-SNAPSHOT</spring-data-releasetrain.version>
-		<spring-hateoas.version>0.14.0.BUILD-SNAPSHOT</spring-hateoas.version>
 		<spring-platform.version>1.0.0.BUILD-SNAPSHOT</spring-platform.version>
 		<spring-data-rest.version>2.2.0.BUILD-SNAPSHOT</spring-data-rest.version>
+		<spring-hateoas.version>0.15.0.BUILD-SNAPSHOT</spring-hateoas.version>
+		<tomcat.version>8.0.9</tomcat.version>
 	</properties>
 
 	<dependencyManagement>
@@ -78,7 +79,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.12.4</version>
+			<version>1.14.4</version>
 		</dependency>
 		
 	</dependencies>
@@ -89,8 +90,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 
