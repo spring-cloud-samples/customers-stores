@@ -4,3 +4,10 @@ spring:
   platform:
     config:
       uri: http://localhost:${config.port:8888}
+      
+---
+spring:
+  profiles: cloud
+  platform:
+    config:
+      uri: ${vcap.services.configserver.credentials.uri:configserver.${application.domain:cfapps.io}}

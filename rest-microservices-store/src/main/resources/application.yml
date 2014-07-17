@@ -19,4 +19,4 @@ eureka:
   instance:
     hostname: customers.23.21.254.2.xip.io
     nonSecurePort: 80
-    
+  
