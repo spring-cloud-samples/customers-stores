@@ -18,72 +18,93 @@ package example.customers.integration;
 import java.net.URI;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.DiscoveryManager;
 
 /**
  * @author Oliver Gierke
  */
 @Component
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
+@ConfigurationProperties("integration.stores")
 public class StoreIntegration {
 
-	private final Environment env;
+	@Getter
+	@Setter
+	private String uri = "http://localhost:8081/stores";
 
-	private @Getter Link storesByLocationLink;
+	private Link link;
 
-	@Scheduled(fixedDelay = 5000)
-	public void checkStoresAvailability() {
+	private long timestamp = System.currentTimeMillis();
 
-		if (storesByLocationLink != null) {
-			verify(storesByLocationLink);
-		} else {
-			discoverByLocationLink();
+	public Link getStoresByLocationLink() {
+		if (System.currentTimeMillis() - timestamp > 5000) {
+			this.link = discoverByLocationLink();
+			timestamp = System.currentTimeMillis();
 		}
+		return this.link;
 	}
 
-	private void verify(Link link) {
+	private boolean verify(Link link) {
+
+		if (link == null) {
+			return false;
+		}
 
 		try {
-			log.info("Verifying stores-nearby link pointing to {}…", storesByLocationLink);
+			log.info("Verifying stores-nearby link pointing to {}…", link);
 			new RestTemplate().headForHeaders(link.expand().getHref());
 			log.info("Successfully verified link!");
-		} catch (RestClientException o_O) {
-
-			log.info("Verification failed, marking as outdated!");
-			this.storesByLocationLink = null;
+			return true;
 		}
+		catch (RestClientException o_O) {
+			log.info("Verification failed, marking as outdated!");
+		}
+		return false;
 	}
 
-	private void discoverByLocationLink() {
+	private Link discoverByLocationLink() {
+
+		URI storesUri = URI.create(uri);
 
 		try {
-			URI storesUri = URI.create(env.getProperty("integration.stores.uri"));
+			InstanceInfo instance = DiscoveryManager.getInstance().getDiscoveryClient()
+					.getNextServerFromEureka("stores.mydomain.net", false);
+			storesUri = URI.create(instance.getHomePageUrl());
+		}
+		catch (RuntimeException e) {
+			// Eureka not available
+		}
+
+		try {
 			log.info("Trying to access the stores system at {}…", storesUri);
 
 			Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
-			this.storesByLocationLink = traverson.follow("stores", "search", "by-location").asLink();
+			Link link = traverson.follow("stores", "search", "by-location").asLink();
 
-			log.info("Found stores-by-location link pointing to {}.", storesByLocationLink.getHref());
+			log.info("Found stores-by-location link pointing to {}.", link.getHref());
 
-		} catch (RuntimeException o_O) {
-			this.storesByLocationLink = null;
+			return link;
+
+		}
+		catch (RuntimeException o_O) {
 			log.info("Stores system unavailable. Got: ", o_O.getMessage());
 		}
+		return null;
 	}
 
 	public boolean isStoresAvailable() {
-		return storesByLocationLink != null;
+		return verify(getStoresByLocationLink());
 	}
 }

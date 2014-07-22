@@ -8,9 +8,3 @@ server:
 integration:
   stores:
     uri: http://localhost:8081
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8080/v2/
-      default.defaultZone: http://localhost:8080/v2/

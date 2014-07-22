@@ -1,5 +1,12 @@
-target/
-.settings/
-.project
+*~
+#*
+*#
+.#*
 .classpath
+.project
+.settings
 .springBeans
+.gradle
+build
+bin
+target/

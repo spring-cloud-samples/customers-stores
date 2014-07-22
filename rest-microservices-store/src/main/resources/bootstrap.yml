@@ -1,6 +1,6 @@
 spring:
   application:
-    name: customers
+    name: stores
 ---
 spring:
   profiles: cloud
