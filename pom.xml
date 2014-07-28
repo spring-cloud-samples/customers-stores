@@ -25,7 +25,7 @@
 		<spring-platform.version>1.0.0.BUILD-SNAPSHOT</spring-platform.version>
 		<spring-data-commons.version>1.9.0.BUILD-SNAPSHOT</spring-data-commons.version>
 		<spring-data-rest.version>2.2.0.BUILD-SNAPSHOT</spring-data-rest.version>
-		<spring-hateoas.version>0.15.0.BUILD-SNAPSHOT</spring-hateoas.version>
+		<spring-hateoas.version>0.16.0.BUILD-SNAPSHOT</spring-hateoas.version>
 		<tomcat.version>8.0.9</tomcat.version>
 	</properties>
 
