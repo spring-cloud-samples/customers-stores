@@ -48,17 +48,14 @@ public class CustomerResourceProcessor implements ResourceProcessor<Resource<Cus
 		Customer customer = resource.getContent();
 		Location location = customer.getAddress().getLocation();
 
-		if (location == null || !storeIntegration.isStoresAvailable()) {
-			return resource;
-		}
-
 		Link link = storeIntegration.getStoresByLocationLink();
+        if (link != null) {
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("location", String.format("%s,%s", location.getLatitude(), location.getLongitude()));
+            parameters.put("distance", "50km");
 
-		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("location", String.format("%s,%s", location.getLatitude(), location.getLongitude()));
-		parameters.put("distance", "50km");
-
-		resource.add(link.expand(parameters).withRel("stores-nearby"));
+            resource.add(link.expand(parameters).withRel("stores-nearby"));
+        }
 
 		return resource;
 	}
