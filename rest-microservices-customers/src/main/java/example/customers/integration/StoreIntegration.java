@@ -15,22 +15,19 @@
  */
 package example.customers.integration;
 
-import java.net.URI;
-
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.DiscoveryManager;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.DiscoveryManager;
+import java.net.URI;
 
 /**
  * @author Oliver Gierke
@@ -40,42 +37,17 @@ import com.netflix.discovery.DiscoveryManager;
 @ConfigurationProperties("integration.stores")
 public class StoreIntegration {
 
-	@Getter
+    public StoreIntegration() {
+        System.out.println("Creating "+getClass());
+    }
+
+    @Getter
 	@Setter
 	private String uri = "http://localhost:8081/stores";
 
-	private Link link;
-
-	private long timestamp = System.currentTimeMillis();
-
+    //TODO: add hystrix caching
+    @HystrixCommand(fallbackMethod = "defaultLink")
 	public Link getStoresByLocationLink() {
-		if (System.currentTimeMillis() - timestamp > 5000) {
-			this.link = discoverByLocationLink();
-			timestamp = System.currentTimeMillis();
-		}
-		return this.link;
-	}
-
-	private boolean verify(Link link) {
-
-		if (link == null) {
-			return false;
-		}
-
-		try {
-			log.info("Verifying stores-nearby link pointing to {}…", link);
-			new RestTemplate().headForHeaders(link.expand().getHref());
-			log.info("Successfully verified link!");
-			return true;
-		}
-		catch (RestClientException o_O) {
-			log.info("Verification failed, marking as outdated!");
-		}
-		return false;
-	}
-
-	private Link discoverByLocationLink() {
-
 		URI storesUri = URI.create(uri);
 
 		try {
@@ -87,24 +59,18 @@ public class StoreIntegration {
 			// Eureka not available
 		}
 
-		try {
-			log.info("Trying to access the stores system at {}…", storesUri);
+        log.info("Trying to access the stores system at {}…", storesUri);
 
-			Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
-			Link link = traverson.follow("stores", "search", "by-location").asLink();
+        Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
+        Link link = traverson.follow("stores", "search", "by-location").asLink();
 
-			log.info("Found stores-by-location link pointing to {}.", link.getHref());
+        log.info("Found stores-by-location link pointing to {}.", link.getHref());
 
-			return link;
-
-		}
-		catch (RuntimeException o_O) {
-			log.info("Stores system unavailable. Got: ", o_O.getMessage());
-		}
-		return null;
+        return link;
 	}
 
-	public boolean isStoresAvailable() {
-		return verify(getStoresByLocationLink());
-	}
+    @SuppressWarnings("unused")
+    private Link defaultLink() {
+        return null;
+    }
 }

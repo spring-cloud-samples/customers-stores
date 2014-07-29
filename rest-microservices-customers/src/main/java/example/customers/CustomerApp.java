@@ -20,6 +20,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.platform.netflix.hystrix.annotations.EnableHystrix;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -28,6 +29,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAutoConfiguration
 @ComponentScan
 @EnableScheduling
+@EnableHystrix
 @Import(RepositoryRestMvcConfiguration.class)
 public class CustomerApp {
 
