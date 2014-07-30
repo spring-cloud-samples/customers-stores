@@ -19,6 +19,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.platform.netflix.hystrix.annotations.EnableHystrix;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -31,7 +32,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableHystrix
 @Import(RepositoryRestMvcConfiguration.class)
-public class CustomerApp {
+public class CustomerApp extends RepositoryRestMvcConfiguration {
+
+    @Override
+    protected void configureRepositoryRestConfiguration( RepositoryRestConfiguration config) {
+        config.exposeIdsFor(Customer.class);
+    }
 
 	public static void main(String[] args) {
 		SpringApplication.run(CustomerApp.class, args);
