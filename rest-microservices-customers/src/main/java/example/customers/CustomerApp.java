@@ -21,6 +21,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.platform.netflix.eureka.EnableEurekaClient;
 import org.springframework.platform.netflix.hystrix.annotations.EnableHystrix;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -31,6 +32,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan
 @EnableScheduling
 @EnableHystrix
+@EnableEurekaClient
 @Import(RepositoryRestMvcConfiguration.class)
 public class CustomerApp extends RepositoryRestMvcConfiguration {
 

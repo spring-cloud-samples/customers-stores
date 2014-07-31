@@ -21,6 +21,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.platform.netflix.eureka.EnableEurekaClient;
 
 /**
  * Spring configuration class main application bootstrap point.
@@ -29,6 +30,7 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
  */
 @EnableAutoConfiguration
 @ComponentScan
+@EnableEurekaClient
 @Import(RepositoryRestMvcConfiguration.class)
 public class StoreApp extends RepositoryRestMvcConfiguration {
 
