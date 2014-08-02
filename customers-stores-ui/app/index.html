@@ -61,7 +61,11 @@
     <!-- Add your site or application content here -->
     <div class="container">
 
-      <div ui-view></div>
+      <div class="container-fluid">
+        <div class="container xd-container">
+          <div ui-view id="xd-content" class="tab-content"></div>
+        </div>
+      </div>
 
       <div class="footer">
         <p><span class="glyphicon glyphicon-heart"></span> from the Spring team</p>
@@ -87,8 +91,10 @@
     <![endif]-->
     <!-- endbuild -->
 
-    <!-- build:js(.) scripts/vendor.js -->
     <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+
+    <!-- build:js(.) scripts/vendor.js -->
+
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>

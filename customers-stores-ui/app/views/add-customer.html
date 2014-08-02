@@ -15,8 +15,6 @@
              ng-model="customer.lastname" name="lastname" placeholder="Your last name">
     </div>
   </div>
-
-
   <div class="form-group">
     <label for="street" class="col-sm-2 control-label">Street</label>
     <div class="col-sm-10">
@@ -36,6 +34,7 @@
     <div class="col-sm-10">
       <input type="text" class="form-control" id="zipCode"
              ng-model="customer.address.zipCode" name="zipCode" placeholder="ZIP or Postal Code">
+      <button type="button" class="btn btn-default" ng-click="geocodeAddress()">Geocode Address</button>
     </div>
   </div>
   <div class="form-group">
@@ -62,4 +61,6 @@
 </form>
 
 <pre>{{customer}}</pre>
-<google-map center="map.center" zoom="map.zoom"></google-map>
+<google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events">
+  <marker coords="customer.address.location"></marker>
+</google-map>

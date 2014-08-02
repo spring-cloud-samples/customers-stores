@@ -8,7 +8,7 @@
  * Controller of the customersStoresUiApp
  */
 angular.module('customersStoresUiApp')
-  .controller('CustomerController', function ($scope, $log, $http, $state) {
+  .controller('CustomerController', function ($scope, $log, $http, $state, appConfiguration) {
     
     $scope.addCustomer = function () {
       $state.go('addCustomer');
@@ -19,12 +19,12 @@ angular.module('customersStoresUiApp')
     };
     $scope.deleteCustomer = function (customer) {
       $log.info('Deleting customer with Id: ' + customer.id);
-      $http.delete('/customers/' + customer.id).then(function() {
+      $http.delete(appConfiguration.customerApiUrl + '/customers/' + customer.id).then(function() {
         $scope.loadCustomers();
       });
     };
     $scope.loadCustomers = function () {
-      var customerPromise = $http.get('/customers');
+      var customerPromise = $http.get(appConfiguration.customerApiUrl + '/customers');
       customerPromise.then(function(customers) {
         $log.info('Retrieved customers', customers);
         if (customers.data._embedded) {
@@ -36,13 +36,36 @@ angular.module('customersStoresUiApp')
     $scope.loadCustomers();
   })
 
-  .controller('AddCustomerController', function ($scope, $state, $log, $http) {
+  .controller('AddCustomerController', function ($scope, $state, $log, $http, appConfiguration) {
     $scope.map = {
         center: {
             latitude: 45,
             longitude: -73
         },
-        zoom: 12
+        zoom: 12,
+        events: {
+          tilesloaded: function (map, eventName, originalEventArgs) {
+            $log.log('Map has loaded: ' + eventName, map, originalEventArgs);
+          },
+          click: function (mapModel, eventName, originalEventArgs) {
+            // 'this' is the directive's scope
+            $log.log('user defined event: ' + eventName, mapModel, originalEventArgs);
+
+            var e = originalEventArgs[0];
+            var lat = e.latLng.lat(),
+                lon = e.latLng.lng();
+            $scope.map.clickedMarker = {
+              id: 0,
+              title: 'You clicked here ' + 'lat: ' + lat + ' lon: ' + lon,
+              latitude: lat,
+              longitude: lon
+            };
+            $scope.customer.address.location.latitude = lat;
+            $scope.customer.address.location.longitude = lon;
+            //scope apply required because this event handler is outside of the angular domain
+            $scope.$apply();
+          }
+       }
     };
     $scope.customer = {
       firstName: '',
@@ -57,6 +80,37 @@ angular.module('customersStoresUiApp')
     $scope.goBack = function () {
       $state.go('customers');
     };
+    $scope.geocodeAddress = function () {
+      var geocoder = new google.maps.Geocoder();
+      var address = [];
+
+      if ($scope.customer.address.street) {
+        address.push($scope.customer.address.street);
+      }
+      if ($scope.customer.address.city) {
+        address.push($scope.customer.address.city);
+      }
+      if ($scope.customer.address.zipCode) {
+        address.push($scope.customer.address.zipCode);
+      }
+
+      $log.info('Geocoding address:', address.join(','));
+      geocoder.geocode( { 'address': address.join(',')}, function(results, status) {
+        //if (status === google.maps.GeocoderStatus.OK) {
+          $log.info('Found coordinates:', results[0].geometry.location);
+          $scope.customer.address.location.latitude = results[0].geometry.location.lat;
+          $scope.customer.address.location.longitude = results[0].geometry.location.lng;
+          $scope.apply();
+          // map.setCenter(results[0].geometry.location);
+          // var marker = new google.maps.Marker({
+          //   map: map,
+          //   position: results[0].geometry.location
+          // });
+        //} else {
+          //alert('Geocode was not successful for the following reason: ' + status);
+        //}
+      });
+    };
     $scope.getMyLocation = function () {
       $log.info('Retrieving Location Information');
       navigator.geolocation.getCurrentPosition(function success(data) {
@@ -70,7 +124,7 @@ angular.module('customersStoresUiApp')
     };
     $scope.submitCustomer = function () {
       $log.info('Adding New Customer', $scope.customer);
-      var addCustomerPromise = $http.post('/customers', $scope.customer);
+      var addCustomerPromise = $http.post(appConfiguration.customerApiUrl + '/customers', $scope.customer);
 
       addCustomerPromise.then(function(response) {
         $log.info(response);
@@ -84,9 +138,20 @@ angular.module('customersStoresUiApp')
       }
     }, true);
   })
-  .controller('CustomerDetailsController', function ($scope, $state, $stateParams, $http, $log) {
+  .controller('CustomerDetailsController', function ($scope, $state, $stateParams, $http, $log, appConfiguration) {
     var customerId = $stateParams.customerId;
-    var customerPromise = $http.get('/customers/' + customerId);
+    var customerPromise = $http.get(appConfiguration.customerApiUrl + '/customers/' + customerId);
+    
+    $scope.customer = {
+      firstName: '',
+      lastName: '',
+      address: {
+        location: {
+          latitude: 0,
+          longitude: 0
+        }
+      }
+    };
 
     customerPromise.then(function(customers) {
       $log.info(customers);

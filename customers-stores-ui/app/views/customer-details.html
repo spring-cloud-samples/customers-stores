@@ -15,8 +15,11 @@
 		  <div class="col-md-10">Latitude: {{customer.address.location.latitude}}, Longitude: {{customer.address.location.longitude}}</div>
 		</div>
 	</div>
+	<pre>{{customer.address.location}} - {{map.center}}</pre>
 	<div class="col-md-6">
-		<google-map center="map.center" zoom="map.zoom"></google-map>
+		<google-map center="map.center" zoom="map.zoom" draggable="true">
+          <marker coords='customer.address.location'></marker>
+		</google-map>
 	</div>
 </div>
 
