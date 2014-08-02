@@ -1,4 +1,4 @@
-// Generated on 2014-07-29 using generator-angular 0.9.5
+// Generated on 2014-08-01 using generator-angular 0.9.5
 'use strict';
 
 // # Globbing
@@ -50,7 +50,7 @@ module.exports = function (grunt) {
       },
       less: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.less'],
-        tasks: ['less']
+        tasks: ['less:server', 'autoprefixer']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -172,19 +172,7 @@ module.exports = function (grunt) {
         src: ['test/spec/{,*/}*.js']
       }
     },
-    less: {
-      dist: {
-        files: {
-          '<%= yeoman.app %>/styles/main.css': ['<%= yeoman.app %>/styles/main.less']
-        },
-        options: {
-          sourceMap: true,
-          sourceMapFilename: '<%= yeoman.app %>/styles/main.css.map',
-          sourceMapBasepath: '<%= yeoman.app %>/',
-          sourceMapRootpath: '/'
-        }
-      }
-    },
+
     // Empties folders to start fresh
     clean: {
       dist: {
@@ -198,6 +186,39 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp'
+    },
+
+    less: {
+        options: {
+            paths: ['<%= yeoman.app %>/bower_components'],
+        },
+        dist: {
+            options: {
+                cleancss: true,
+                report: 'gzip'
+            },
+            files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/styles',
+                src: '*.less',
+                dest: '.tmp/styles',
+                ext: '.css'
+            }]
+        },
+        server: {
+            options: {
+                sourceMap: true,
+                sourceMapBasepath: '<%= yeoman.app %>/',
+                sourceMapRootpath: '../'
+            },
+            files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/styles',
+                src: '*.less',
+                dest: '.tmp/styles',
+                ext: '.css'
+            }]
+        }
     },
 
     // Add vendor prefixed styles
@@ -367,7 +388,7 @@ module.exports = function (grunt) {
             '*.html',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
-            'fonts/*'
+            'fonts/{,*/}*'
           ]
         }, {
           expand: true,
@@ -392,12 +413,14 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
+        'less:server',
         'copy:styles'
       ],
       test: [
         'copy:styles'
       ],
       dist: [
+        'less:dist',
         'copy:styles',
         'imagemin',
         'svgmin'
@@ -421,7 +444,6 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'less',
       'wiredep',
       'concurrent:server',
       'autoprefixer',
@@ -449,7 +471,6 @@ module.exports = function (grunt) {
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
-    'less',
     'autoprefixer',
     'concat',
     'ngmin',
