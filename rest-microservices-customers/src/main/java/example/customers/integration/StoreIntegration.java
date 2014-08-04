@@ -15,19 +15,22 @@
  */
 package example.customers.integration;
 
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.DiscoveryManager;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import java.net.URI;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
 import org.springframework.stereotype.Component;
 
-import java.net.URI;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.DiscoveryClient;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
  * @author Oliver Gierke
@@ -37,8 +40,12 @@ import java.net.URI;
 @ConfigurationProperties("integration.stores")
 public class StoreIntegration {
 
-    public StoreIntegration() {
-        System.out.println("Creating "+getClass());
+	private DiscoveryClient discoveryClient;
+
+	@Autowired
+    public StoreIntegration(DiscoveryClient discoveryClient) {
+        this.discoveryClient = discoveryClient;
+		System.out.println("Creating "+getClass());
     }
 
     @Getter
@@ -51,8 +58,7 @@ public class StoreIntegration {
 		URI storesUri = URI.create(uri);
 
 		try {
-			InstanceInfo instance = DiscoveryManager.getInstance().getDiscoveryClient()
-					.getNextServerFromEureka("stores.mydomain.net", false);
+			InstanceInfo instance = discoveryClient.getNextServerFromEureka("stores.mydomain.net", false);
 			storesUri = URI.create(instance.getHomePageUrl());
 		}
 		catch (RuntimeException e) {
