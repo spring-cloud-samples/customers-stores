@@ -1,0 +1,15 @@
+
+<h1>Stores</h1>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <th>Name</th>
+    <th>City</th>
+  </thead>
+  <tbody>
+    <tr ng-repeat="store in stores">
+      <td>{{store.name}}</td>
+      <td>{{store.address.city}}</td>
+    </tr>
+  </tbody>
+</table>

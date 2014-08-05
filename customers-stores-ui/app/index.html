@@ -43,6 +43,9 @@
               <li ng-class="{ active: $state.includes('customers') }">
                   <a ui-sref="customers">Customers</a>
               </li>
+              <li ng-class="{ active: $state.includes('stores') }">
+                  <a ui-sref="stores">Stores</a>
+              </li>
             <li ng-class="{ active: $state.includes('about') }">
               <a ui-sref="about">About</a>
             </li>
@@ -115,6 +118,7 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/routes.js"></script>
     <script src="scripts/controllers/customer-controller.js"></script>
+    <script src="scripts/controllers/store-controller.js"></script>
     <script src="scripts/controllers/about-controller.js"></script>
     <!-- endbuild -->
 </body>

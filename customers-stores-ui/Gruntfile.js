@@ -149,6 +149,12 @@ module.exports = function (grunt) {
           host: 'localhost',
           port: 9000,
           changeOrigin: true
+        },
+        {
+          context: ['/stores'],
+          host: 'localhost',
+          port: 8081,
+          changeOrigin: true
         }
       ]
     },

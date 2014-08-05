@@ -19,6 +19,11 @@ angular.module('customersStoresUiApp')
       controller: 'CustomerDetailsController',
       templateUrl: 'views/customer-details.html'
     })
+    .state('stores', {
+      url: '/stores',
+      controller: 'StoreController',
+      templateUrl: 'views/stores.html'
+    })
     .state('about', {
       url: '/about',
       templateUrl: 'views/about.html'
