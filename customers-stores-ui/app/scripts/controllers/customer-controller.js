@@ -39,8 +39,8 @@ angular.module('customersStoresUiApp')
   .controller('AddCustomerController', function ($scope, $state, $log, $http, appConfiguration) {
     $scope.map = {
         center: {
-            latitude: 45,
-            longitude: -73
+            latitude: 33.7489954,
+            longitude: -84.3879824
         },
         zoom: 12,
         events: {
@@ -96,19 +96,64 @@ angular.module('customersStoresUiApp')
 
       $log.info('Geocoding address:', address.join(','));
       geocoder.geocode( { 'address': address.join(',')}, function(results, status) {
-        //if (status === google.maps.GeocoderStatus.OK) {
+        if (status === google.maps.GeocoderStatus.OK) {
           $log.info('Found coordinates:', results[0].geometry.location);
-          $scope.customer.address.location.latitude = results[0].geometry.location.lat;
-          $scope.customer.address.location.longitude = results[0].geometry.location.lng;
-          $scope.apply();
+
+          $scope.$apply(function() {
+            $scope.customer.address.location.latitude = results[0].geometry.location.lat();
+            $scope.customer.address.location.longitude = results[0].geometry.location.lng();
+          });
+          //$scope.apply();
           // map.setCenter(results[0].geometry.location);
           // var marker = new google.maps.Marker({
           //   map: map,
           //   position: results[0].geometry.location
           // });
-        //} else {
-          //alert('Geocode was not successful for the following reason: ' + status);
-        //}
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    };
+    $scope.reverseGeocodeCoordinates = function () {
+      var geocoder = new google.maps.Geocoder();
+      var lat = parseFloat($scope.customer.address.location.latitude);
+      var lng = parseFloat($scope.customer.address.location.longitude);
+      var latlng = new google.maps.LatLng(lat, lng);
+
+      $log.info('Reverse Geocoding:', latlng);
+      geocoder.geocode({'latLng': latlng}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          $log.info('Found Address:', results[0]);
+
+          var city = '';
+          var zip = '';
+          var streetNumber = '';
+          var route = '';
+
+          /*jshint camelcase: false */
+          _(results[0].address_components).forEach(function(addressComponent) {
+            $log.info('addressComponent', addressComponent);
+            if (_.contains(addressComponent.types, 'locality')) {
+              city = addressComponent.long_name;
+            }
+            if (_.contains(addressComponent.types, 'postal_code')) {
+              zip = addressComponent.long_name;
+            }
+            if (_.contains(addressComponent.types, 'street_number')) {
+              streetNumber = addressComponent.long_name + ' ';
+            }
+            if (_.contains(addressComponent.types, 'route')) {
+              route = addressComponent.long_name;
+            }
+          });
+          $scope.$apply(function() {
+            $scope.customer.address.city = city;
+            $scope.customer.address.zipCode = zip;
+            $scope.customer.address.street = streetNumber + route;
+          });
+        } else {
+          alert('Reverse Geocode was not successful for the following reason: ' + status);
+        }
       });
     };
     $scope.getMyLocation = function () {
@@ -165,10 +210,33 @@ angular.module('customersStoresUiApp')
         zoom: 12
       };
       $log.info('Map Data', $scope.Map);
+
+      $scope.findStoresNearby($scope.customer.address.location);
     });
 
     $scope.goBack = function () {
       $state.go('customers');
+    };
+    $scope.findStoresNearby = function (location) {
+      if (location) {
+        $log.info('Which Starbucks location are close to', location);
+        var locationPromise = $http.get(appConfiguration.storeApiUrl + '/stores/search/findByAddressLocationNear?location=' + location.latitude + ',' + location.longitude);
+        locationPromise.then(function(locations) {
+          $log.info('Nearby locations', locations);
+          if (locations.data._embedded) {
+            $scope.stores = locations.data._embedded.stores;
+            _($scope.stores).forEach(function(store) {
+              var latitude = store.address.location.y;
+              var longitude = store.address.location.x;
+              // $log.info(store);
+              store.latitude = latitude;
+              store.longitude = longitude;
+              store.icon = 'starbucks_logo.png';
+            });
+          }
+          $log.info('Nearby locations2', locations);
+        });
+      }
     };
 
     $scope.map = {
