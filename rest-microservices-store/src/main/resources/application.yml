@@ -5,3 +5,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost/stores
+
+logging:
+  level:
+    com.netflix.discovery: WARN

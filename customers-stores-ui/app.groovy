@@ -1,6 +1,8 @@
+@EnableEurekaClient
+@EnableZuulProxy
 @Controller
 class Application extends WebMvcConfigurerAdapter {
-  void addResourceHandlers(ResourceHandlerRegistry registry) { 
+  void addResourceHandlers(ResourceHandlerRegistry registry) {
     registry.addResourceHandler("/**").addResourceLocations('classpath:/', 'classpath:/dist/')
   }
   @RequestMapping("/")

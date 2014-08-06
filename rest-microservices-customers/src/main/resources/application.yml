@@ -8,3 +8,7 @@ server:
 integration:
   stores:
     uri: http://localhost:8081
+
+logging:
+  level:
+    com.netflix.discovery: WARN

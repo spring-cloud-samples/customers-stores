@@ -32,6 +32,6 @@ import org.springframework.data.rest.core.annotation.RestResource;
 public interface StoreRepository extends PagingAndSortingRepository<Store, String> {
 
 	@RestResource(rel = "by-location")
-	Page<Store> findByAddressLocationNear(//
+	Page<Store> findByAddressLocationNear(
 			@Param("location") Point location, @Param("distance") Distance distance, Pageable pageable);
 }
