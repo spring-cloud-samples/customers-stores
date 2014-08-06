@@ -58,7 +58,7 @@ public class StoreIntegration {
 		URI storesUri = URI.create(uri);
 
 		try {
-			InstanceInfo instance = discoveryClient.getNextServerFromEureka("stores.mydomain.net", false);
+			InstanceInfo instance = discoveryClient.getNextServerFromEureka("stores", false);
 			storesUri = URI.create(instance.getHomePageUrl());
 		}
 		catch (RuntimeException e) {
