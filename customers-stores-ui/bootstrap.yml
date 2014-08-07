@@ -1,7 +1,6 @@
 spring:
   application:
     name: customersui
-
 ---
 spring:
   profiles: cloud

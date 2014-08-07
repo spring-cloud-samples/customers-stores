@@ -2,3 +2,5 @@ node_modules
 .tmp
 .editorconfig
 bower_components
+app.jar
+
