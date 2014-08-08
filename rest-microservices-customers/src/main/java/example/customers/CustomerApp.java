@@ -18,7 +18,6 @@ package example.customers;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.platform.netflix.eureka.EnableEurekaClient;
@@ -33,7 +32,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableHystrix
 @EnableEurekaClient
-@Import(RepositoryRestMvcConfiguration.class)
 public class CustomerApp extends RepositoryRestMvcConfiguration {
 
     @Override
