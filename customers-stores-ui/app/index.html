@@ -121,32 +121,5 @@
     <script src="scripts/controllers/store-controller.js"></script>
     <script src="scripts/controllers/about-controller.js"></script>
     <!-- endbuild -->
-
-    <script type="text/javascript">
-
-      //e.g. http://myserver:9000/rest
-      var customCustomerApiUrl = 'http://integration.local:9000';
-      var customStoreApiUrl = 'http://integration.local:8081';
-
-      angular.module('customersStoresUiApp').constant('appConfiguration', (function() {
-        var customerApiUrl = window.location.protocol + '//' + window.location.host + '/proxy';
-        var storeApiUrl= window.location.protocol + '//' + window.location.host + '/proxy';
-
-        if (customCustomerApiUrl) {
-          customerApiUrl = customCustomerApiUrl;
-        }
-        if (customStoreApiUrl) {
-          storeApiUrl = customStoreApiUrl;
-        }
-
-        console.log('customerApiUrl', customerApiUrl);
-        console.log('storeApiUrl', storeApiUrl);
-
-        return {
-          customerApiUrl: customerApiUrl,
-          storeApiUrl: customStoreApiUrl
-        }
-      })());
-    </script>
 </body>
 </html>
