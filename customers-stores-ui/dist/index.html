@@ -8,4 +8,26 @@
        ga('create', 'UA-XXXXX-X');
        ga('send', 'pageview');</script> <!--[if lt IE 9]>
     <script src="scripts/oldieshim.ff90b0fb.js"></script>
-    <![endif]--> <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script> <script src="scripts/vendor.3db9f926.js"></script> <script src="scripts/scripts.0b96fbf4.js"></script>  
+    <![endif]--> <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script> <script src="scripts/vendor.3db9f926.js"></script> <script src="scripts/scripts.18d8f8af.js"></script> <script type="text/javascript">//e.g. http://myserver:9000/rest
+      var customCustomerApiUrl = 'http://integration.local:9000';
+      var customStoreApiUrl = 'http://integration.local:8081';
+
+      angular.module('customersStoresUiApp').constant('appConfiguration', (function() {
+        var customerApiUrl = window.location.protocol + '//' + window.location.host + '/proxy',
+        var storeApiUrl= window.location.protocol + '//' + window.location.host + '/proxy';
+
+        if (customCustomerApiUrl) {
+          customerApiUrl = customCustomerApiUrl;
+        }
+        if (customStoreApiUrl) {
+          storeApiUrl = customStoreApiUrl;
+        }
+
+        console.log('customerApiUrl', customerApiUrl);
+        console.log('storeApiUrl', storeApiUrl);
+
+        return {
+          customerApiUrl: customerApiUrl,
+          storeApiUrl: customStoreApiUrl
+        }
+      })());</script>  
