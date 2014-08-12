@@ -38,23 +38,18 @@ public class CustomerResourceProcessor implements ResourceProcessor<Resource<Cus
 
 	private final StoreIntegration storeIntegration;
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.springframework.hateoas.ResourceProcessor#process(org.springframework.hateoas.ResourceSupport)
-	 */
 	@Override
 	public Resource<Customer> process(Resource<Customer> resource) {
 
 		Customer customer = resource.getContent();
 		Location location = customer.getAddress().getLocation();
 
-		Link link = storeIntegration.getStoresByLocationLink();
+		Map<String, Object> parameters = new HashMap<>();
+    	parameters.put("location", String.format("%s,%s", location.getLatitude(), location.getLongitude()));
+    	parameters.put("distance", "50km");
+		Link link = storeIntegration.getStoresByLocationLink(parameters);
         if (link != null) {
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put("location", String.format("%s,%s", location.getLatitude(), location.getLongitude()));
-            parameters.put("distance", "50km");
-
-            resource.add(link.expand(parameters).withRel("stores-nearby"));
+            resource.add(link.withRel("stores-nearby"));
         }
 
 		return resource;

@@ -16,6 +16,7 @@
 package example.customers.integration;
 
 import java.net.URI;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -54,7 +55,7 @@ public class StoreIntegration {
 
     //TODO: add hystrix caching
     @HystrixCommand(fallbackMethod = "defaultLink")
-	public Link getStoresByLocationLink() {
+	public Link getStoresByLocationLink(Map<String, Object> parameters) {
 		URI storesUri = URI.create(uri);
 
 		try {
@@ -68,15 +69,14 @@ public class StoreIntegration {
         log.info("Trying to access the stores system at {}…", storesUri);
 
         Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
-        Link link = traverson.follow("stores", "search", "by-location").asLink();
+        Link link = traverson.follow("stores", "search", "by-location").withTemplateParameters(parameters).asLink();
 
         log.info("Found stores-by-location link pointing to {}.", link.getHref());
 
         return link;
 	}
 
-    @SuppressWarnings("unused")
-    private Link defaultLink() {
+    public Link defaultLink(Map<String, Object> parameters) {
         return null;
     }
 }
