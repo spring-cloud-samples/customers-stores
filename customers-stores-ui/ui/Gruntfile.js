@@ -18,7 +18,7 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: '../src/main/resources/public'
   };
 
   // Define the configuration for all the tasks
@@ -27,6 +27,13 @@ module.exports = function (grunt) {
     // Project settings
     yeoman: appConfig,
 
+    bower: {
+      options: {
+        targetDir: 'bower_components'
+      },
+      // Provide install target
+      install: {}
+    },
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -187,6 +194,7 @@ module.exports = function (grunt) {
 
     // Empties folders to start fresh
     clean: {
+      options: { force: true },
       dist: {
         files: [{
           dot: true,
@@ -460,6 +468,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'bower:install',
       'wiredep',
       'concurrent:server',
       'autoprefixer',
@@ -484,6 +493,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'bower:install',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',

@@ -3,4 +3,5 @@ node_modules
 .editorconfig
 bower_components
 app.jar
+ui/node
 
