@@ -23,6 +23,14 @@ Now you can start the UI using:
 
 	$ grunt serve
 
+## Deploy to Cloudfoundry
 
+Cloudfoundry tends to assume this app is a node.js app (because of all
+the javascript), so you need to package it carefully:
 
+    $ spring jar --exclude='+bower*,node*,Gruntfile.js,*.json' --include='dist/**' app.jar app.groovy
+
+Then
+
+    $ cf push customersui -p app.jar
 
