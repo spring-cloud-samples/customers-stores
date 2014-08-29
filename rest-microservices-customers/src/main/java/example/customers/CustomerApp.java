@@ -20,8 +20,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
-import org.springframework.platform.netflix.eureka.EnableEurekaClient;
-import org.springframework.platform.netflix.hystrix.annotations.EnableHystrix;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.annotations.EnableHystrix;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
