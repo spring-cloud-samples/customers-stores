@@ -9,6 +9,11 @@ integration:
   stores:
     uri: http://localhost:8081
 
+# For demo only allow more hystrix connections
+hystrix:
+  stream:
+    maxConcurrentConnections: 20
+
 logging:
   level:
     com.netflix.discovery: WARN
