@@ -1,6 +1,8 @@
 spring:
   application:
     name: customers
+encrypt:
+  key: ${ENCRYPT_KEY:} # deadbeef
 ---
 spring:
   profiles: cloud
