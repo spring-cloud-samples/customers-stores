@@ -1,4 +1,3 @@
-@EnableEurekaClient
 @EnableZuulProxy
 @Controller
 class Application extends WebMvcConfigurerAdapter {
