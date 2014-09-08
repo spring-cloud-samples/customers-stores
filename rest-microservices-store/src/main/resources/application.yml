@@ -8,4 +8,4 @@ spring:
 
 logging:
   level:
-    com.netflix.discovery: WARN
+    com.netflix.discovery: 'OFF'
