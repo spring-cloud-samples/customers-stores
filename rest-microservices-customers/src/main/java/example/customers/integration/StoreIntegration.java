@@ -44,39 +44,40 @@ public class StoreIntegration {
 	private DiscoveryClient discoveryClient;
 
 	@Autowired
-    public StoreIntegration(DiscoveryClient discoveryClient) {
-        this.discoveryClient = discoveryClient;
-		System.out.println("Creating "+getClass());
-    }
+	public StoreIntegration(DiscoveryClient discoveryClient) {
+		this.discoveryClient = discoveryClient;
+		System.out.println("Creating " + getClass());
+	}
 
-    @Getter
+	@Getter
 	@Setter
 	private String uri = "http://localhost:8081/stores";
 
-    //TODO: add hystrix caching
-    @HystrixCommand(fallbackMethod = "defaultLink")
+	@HystrixCommand(fallbackMethod = "defaultLink")
 	public Link getStoresByLocationLink(Map<String, Object> parameters) {
 		URI storesUri = URI.create(uri);
 
 		try {
-			InstanceInfo instance = discoveryClient.getNextServerFromEureka("stores", false);
+			InstanceInfo instance = discoveryClient.getNextServerFromEureka("stores",
+					false);
 			storesUri = URI.create(instance.getHomePageUrl());
 		}
 		catch (RuntimeException e) {
 			// Eureka not available
 		}
 
-        log.info("Trying to access the stores system at {}…", storesUri);
+		log.info("Trying to access the stores system at {}…", storesUri);
 
-        Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
-        Link link = traverson.follow("stores", "search", "by-location").withTemplateParameters(parameters).asLink();
+		Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
+		Link link = traverson.follow("stores", "search", "by-location")
+				.withTemplateParameters(parameters).asLink();
 
-        log.info("Found stores-by-location link pointing to {}.", link.getHref());
+		log.info("Found stores-by-location link pointing to {}.", link.getHref());
 
-        return link;
+		return link;
 	}
 
-    public Link defaultLink(Map<String, Object> parameters) {
-        return null;
-    }
+	public Link defaultLink(Map<String, Object> parameters) {
+		return null;
+	}
 }
