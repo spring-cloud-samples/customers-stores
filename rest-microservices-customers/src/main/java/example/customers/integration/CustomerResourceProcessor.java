@@ -46,7 +46,7 @@ public class CustomerResourceProcessor implements ResourceProcessor<Resource<Cus
 
 		Map<String, Object> parameters = new HashMap<>();
     	parameters.put("location", String.format("%s,%s", location.getLatitude(), location.getLongitude()));
-    	parameters.put("distance", "50km");
+    	parameters.put("distance", "50");
 		Link link = storeIntegration.getStoresByLocationLink(parameters);
         if (link != null) {
             resource.add(link.withRel("stores-nearby"));
