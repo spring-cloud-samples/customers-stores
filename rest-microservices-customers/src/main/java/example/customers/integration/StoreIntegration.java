@@ -24,13 +24,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
 import org.springframework.stereotype.Component;
 
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.DiscoveryClient;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
@@ -41,11 +41,11 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 @ConfigurationProperties("integration.stores")
 public class StoreIntegration {
 
-	private DiscoveryClient discoveryClient;
+	private LoadBalancerClient loadBalancer;
 
-	@Autowired
-	public StoreIntegration(DiscoveryClient discoveryClient) {
-		this.discoveryClient = discoveryClient;
+    @Autowired
+	public StoreIntegration(LoadBalancerClient loadBalancer) {
+        this.loadBalancer = loadBalancer;
 		System.out.println("Creating " + getClass());
 	}
 
@@ -58,16 +58,19 @@ public class StoreIntegration {
 		URI storesUri = URI.create(uri);
 
 		try {
-			InstanceInfo instance = discoveryClient.getNextServerFromEureka("stores",
-					false);
-			storesUri = URI.create(instance.getHomePageUrl());
+            ServiceInstance instance = loadBalancer.choose("stores");
+			storesUri = URI.create(String.format("http://%s:%s", instance.getHost(), instance.getPort()));
 		}
 		catch (RuntimeException e) {
+            //e.printStackTrace();
 			// Eureka not available
 		}
 
 		log.info("Trying to access the stores system at {}…", storesUri);
 
+        //TODO: all of the above could be replaced with restTemplate/ribbon
+        //The uri would be http://stores
+        //traverson.setRestOperations and stuff from Traverson.createDefaultTemplate
 		Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
 		Link link = traverson.follow("stores", "search", "by-location")
 				.withTemplateParameters(parameters).asLink();
