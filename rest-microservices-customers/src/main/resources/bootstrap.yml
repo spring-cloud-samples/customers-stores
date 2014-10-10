@@ -1,12 +1,15 @@
 spring:
   application:
     name: customers
-encrypt:
-  key: ${ENCRYPT_KEY:} # deadbeef
+  cloud:
+    config:
+      uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
+
 ---
 spring:
   profiles: cloud
   cloud:
     config:
-      uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://localhost:8888}
+      password: password
+
       
