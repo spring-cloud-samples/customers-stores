@@ -4,12 +4,4 @@ spring:
   cloud:
     config:
       uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
-
----
-spring:
-  profiles: cloud
-  cloud:
-    config:
-      password: password
-
       

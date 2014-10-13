@@ -4,12 +4,3 @@ spring:
   cloud:
     config:
       uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
-
----
-spring:
-  profiles: cloud
-  cloud:
-    config:
-      password: password
-# Best practice would be to encrypt, but PWS doesn't have JCE strong encryption
-#      password: '{cipher}388541ad389a9afb9f797d7679b93a58c3f88a66f6439a318ebd587ac733cad5'
