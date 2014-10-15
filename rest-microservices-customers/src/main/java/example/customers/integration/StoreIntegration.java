@@ -46,7 +46,6 @@ public class StoreIntegration {
     @Autowired
 	public StoreIntegration(LoadBalancerClient loadBalancer) {
         this.loadBalancer = loadBalancer;
-		System.out.println("Creating " + getClass());
 	}
 
 	@Getter

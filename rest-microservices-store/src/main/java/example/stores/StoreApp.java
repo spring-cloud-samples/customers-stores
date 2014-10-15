@@ -17,11 +17,12 @@ package example.stores;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.cloudfoundry.web.EnableStickyFilter;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * Spring configuration class main application bootstrap point.
@@ -31,6 +32,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableAutoConfiguration
 @ComponentScan
 @EnableEurekaClient
+@EnableStickyFilter
 @Import(RepositoryRestMvcConfiguration.class)
 public class StoreApp extends RepositoryRestMvcConfiguration {
 
