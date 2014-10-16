@@ -17,11 +17,11 @@ package example.customers;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -33,13 +33,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableHystrix
 @EnableEurekaClient
 public class CustomerApp extends RepositoryRestMvcConfiguration {
-
-    @Override
-    protected void configureRepositoryRestConfiguration( RepositoryRestConfiguration config) {
-        config.exposeIdsFor(Customer.class);
-    }
+	
+	@Override
+	protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
+		config.exposeIdsFor(Customer.class);
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(CustomerApp.class, args);
 	}
+
 }

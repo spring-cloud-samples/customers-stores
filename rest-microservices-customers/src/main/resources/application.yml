@@ -13,6 +13,8 @@ integration:
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 10
+    metadataMap:
+      zone: ${APPLICATION_DOMAIN:${DOMAIN:defaultZone}}
 
 # For demo only allow more hystrix connections
 hystrix:
