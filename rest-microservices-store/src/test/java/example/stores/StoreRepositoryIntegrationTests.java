@@ -18,6 +18,7 @@ package example.stores;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +46,11 @@ public class StoreRepositoryIntegrationTests {
 	public void setUp() {
 		repository.deleteAll();
 	}
+
+    @After
+    public void tearDown() {
+        repository.deleteAll();
+    }
 
 	@Test
 	public void findsStoresByLocation() {

@@ -15,14 +15,22 @@
  */
 package example.stores;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.cloudfoundry.web.EnableStickyFilter;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Spring configuration class main application bootstrap point.
@@ -44,4 +52,18 @@ public class StoreApp extends RepositoryRestMvcConfiguration {
 	public static void main(String[] args) {
 		SpringApplication.run(StoreApp.class, args);
 	}
+
+    @Controller
+    public static class SimpleStoresController {
+        @Autowired
+        StoreRepository repository;
+
+
+        @RequestMapping("/simple/stores")
+        @ResponseBody
+        List<Store> getStores() {
+            Page<Store> all = repository.findAll(new PageRequest(0, 10));
+            return all.getContent();
+        }
+    }
 }
