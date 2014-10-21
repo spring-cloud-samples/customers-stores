@@ -61,7 +61,6 @@ public class StoreIntegration {
 			storesUri = URI.create(String.format("http://%s:%s", instance.getHost(), instance.getPort()));
 		}
 		catch (RuntimeException e) {
-            //e.printStackTrace();
 			// Eureka not available
 		}
 

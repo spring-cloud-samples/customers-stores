@@ -6,6 +6,10 @@ spring:
     mongodb:
       uri: mongodb://localhost/stores
 
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+
 logging:
   level:
     com.netflix.discovery: 'OFF'
