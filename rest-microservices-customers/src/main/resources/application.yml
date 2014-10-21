@@ -12,13 +12,14 @@ integration:
 
 stores:
   ribbon:
-    ServerListRefreshInterval: 10000
+    ServerListRefreshInterval: 1000
 
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 10
   client:
     region: default
+    registryFetchIntervalSeconds: 5
     availabilityZones: 
       default: ${APPLICATION_DOMAIN:${DOMAIN:defaultZone}}
 

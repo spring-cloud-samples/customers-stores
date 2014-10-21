@@ -106,6 +106,10 @@
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
+					<configuration>
+						<!-- Workaround until 2.1.11 is released; should be an absolute path -->
+						<generateGitPropertiesFilename>target/classes/git.properties</generateGitPropertiesFilename>
+					</configuration>
 			</plugin>
 	        <plugin>
 		      <!--skip deploy -->
