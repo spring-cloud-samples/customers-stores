@@ -11,7 +11,7 @@
 	<artifactId>rest-microservices-customers</artifactId>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-netflix-core</artifactId>
@@ -61,7 +61,7 @@
 			<artifactId>hsqldb</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 </project>

@@ -17,6 +17,7 @@
 	<modules>
 		<module>rest-microservices-store</module>
 		<module>rest-microservices-customers</module>
+        <module>customers-stores-ui</module>
 	</modules>
 
 	<properties>
