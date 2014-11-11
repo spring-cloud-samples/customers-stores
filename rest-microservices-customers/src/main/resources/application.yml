@@ -29,6 +29,8 @@ eureka:
 hystrix:
   stream:
     maxConcurrentConnections: 20
+    bus:
+      enabled: true
 
 logging:
   level:
