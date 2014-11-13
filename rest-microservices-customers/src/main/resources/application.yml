@@ -1,7 +1,3 @@
-spring:
-  application:
-    name: customers
-
 server:
   port: 9000
 
