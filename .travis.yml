@@ -2,3 +2,4 @@ language: java
 script: mvn package -nsu -Dmaven.test.redirectTestOutputToFile=true
 services:
   - mongodb
+  - rabbitmq
