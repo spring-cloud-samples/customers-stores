@@ -160,7 +160,7 @@
 	<pluginRepositories>
         <pluginRepository>
             <id>spring-libs-milestones</id>
-            <url>http://repo.spring.io/libs-milestones-local</url>
+            <url>http://repo.spring.io/libs-milestone-local</url>
         </pluginRepository>
 		<pluginRepository>
 			<id>spring-libs-release</id>
