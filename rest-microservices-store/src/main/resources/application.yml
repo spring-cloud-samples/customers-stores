@@ -1,5 +1,6 @@
 server:
   port: 8081
+  context-path: /api
 
 spring:
   data:

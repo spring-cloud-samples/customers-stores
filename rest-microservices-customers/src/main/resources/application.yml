@@ -1,5 +1,6 @@
 server:
   port: 9000
+  context-path: /api
 
 integration:
   stores:
