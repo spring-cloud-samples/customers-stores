@@ -15,13 +15,9 @@
  */
 package example.customers.integration;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
+import example.customers.Customer;
+import example.customers.Location;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -29,11 +25,11 @@ import org.springframework.hateoas.ResourceProcessor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
-import example.customers.Customer;
-import example.customers.Location;
-
 import javax.inject.Provider;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Oliver Gierke
@@ -42,7 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerResourceProcessor implements ResourceProcessor<Resource<Customer>> {
 
-	private final StoreIntegration storeIntegration;
+    private static final String X_FORWARDED_HOST = "X-Forwarded-Host";
+    private final StoreIntegration storeIntegration;
     private final Provider<HttpServletRequest> requestProvider;
 
 	@Override
@@ -53,9 +50,9 @@ public class CustomerResourceProcessor implements ResourceProcessor<Resource<Cus
 
         HttpHeaders headers = new HttpHeaders();
 
-        for (String name : Collections.list(requestProvider.get().getHeaderNames())) {
-            ArrayList<String> values = Collections.list(requestProvider.get().getHeaders(name));
-            headers.put(name, values);
+        String header = requestProvider.get().getHeader(X_FORWARDED_HOST);
+        if (header != null) {
+            headers.put(X_FORWARDED_HOST, Collections.singletonList(header));
         }
 
         Map<String, Object> parameters = new HashMap<>();
