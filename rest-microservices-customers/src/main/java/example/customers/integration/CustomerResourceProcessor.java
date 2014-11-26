@@ -15,6 +15,8 @@
  */
 package example.customers.integration;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,10 +26,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import example.customers.Customer;
 import example.customers.Location;
+
+import javax.inject.Provider;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Oliver Gierke
@@ -37,6 +43,7 @@ import example.customers.Location;
 public class CustomerResourceProcessor implements ResourceProcessor<Resource<Customer>> {
 
 	private final StoreIntegration storeIntegration;
+    private final Provider<HttpServletRequest> requestProvider;
 
 	@Override
 	public Resource<Customer> process(Resource<Customer> resource) {
@@ -44,10 +51,17 @@ public class CustomerResourceProcessor implements ResourceProcessor<Resource<Cus
 		Customer customer = resource.getContent();
 		Location location = customer.getAddress().getLocation();
 
-		Map<String, Object> parameters = new HashMap<>();
+        HttpHeaders headers = new HttpHeaders();
+
+        for (String name : Collections.list(requestProvider.get().getHeaderNames())) {
+            ArrayList<String> values = Collections.list(requestProvider.get().getHeaders(name));
+            headers.put(name, values);
+        }
+
+        Map<String, Object> parameters = new HashMap<>();
     	parameters.put("location", String.format("%s,%s", location.getLatitude(), location.getLongitude()));
     	parameters.put("distance", "50");
-		Link link = storeIntegration.getStoresByLocationLink(parameters);
+		Link link = storeIntegration.getStoresByLocationLink(parameters, headers);
         if (link != null) {
             resource.add(link.withRel("stores-nearby"));
         }

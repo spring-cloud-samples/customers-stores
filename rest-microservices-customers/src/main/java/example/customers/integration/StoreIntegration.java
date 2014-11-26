@@ -15,13 +15,10 @@
  */
 package example.customers.integration;
 
-import java.net.URI;
-import java.util.Map;
-
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.client.ServiceInstance;
@@ -29,9 +26,11 @@ import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import java.net.URI;
+import java.util.Map;
 
 /**
  * @author Oliver Gierke
@@ -53,7 +52,7 @@ public class StoreIntegration {
 	private String uri = "http://localhost:8081/stores";
 
 	@HystrixCommand(fallbackMethod = "defaultLink")
-	public Link getStoresByLocationLink(Map<String, Object> parameters) {
+	public Link getStoresByLocationLink(Map<String, Object> parameters, HttpHeaders headers) {
 		URI storesUri = URI.create(uri);
 
 		try {
@@ -70,7 +69,9 @@ public class StoreIntegration {
         //The uri would be http://stores
         //traverson.setRestOperations and stuff from Traverson.createDefaultTemplate
 		Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
-		Link link = traverson.follow("stores", "search", "by-location")
+
+        Link link = traverson.follow("stores", "search", "by-location")
+                .withHeaders(headers)
 				.withTemplateParameters(parameters).asLink();
 
 		log.info("Found stores-by-location link pointing to {}.", link.getHref());
@@ -78,7 +79,8 @@ public class StoreIntegration {
 		return link;
 	}
 
-	public Link defaultLink(Map<String, Object> parameters) {
+    @SuppressWarnings("unused")
+	public Link defaultLink(Map<String, Object> parameters, HttpHeaders headers) {
 		return null;
 	}
 }
