@@ -1,10 +1,7 @@
 spring:
   application:
     name: customersui
----
-spring:
-  profiles: cloud
   cloud:
     config:
-      uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://localhost:8888}
+      uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
       
