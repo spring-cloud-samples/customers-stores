@@ -18,8 +18,8 @@ package example.stores;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.cloudfoundry.web.EnableStickyFilter;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
@@ -39,7 +39,7 @@ import java.util.List;
  */
 @EnableAutoConfiguration
 @ComponentScan
-@EnableEurekaClient
+@EnableDiscoveryClient
 @EnableStickyFilter
 @Import(RepositoryRestMvcConfiguration.class)
 public class StoreApp extends RepositoryRestMvcConfiguration {
