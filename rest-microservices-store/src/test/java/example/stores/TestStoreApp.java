@@ -3,7 +3,7 @@ package example.stores;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.feign.FeignConfigurer;
+import org.springframework.cloud.netflix.feign.FeignConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ import java.util.Map;
 @Configuration
 @EnableAutoConfiguration
 @EnableDiscoveryClient
-public class TestStoreApp extends FeignConfigurer {
+public class TestStoreApp extends FeignConfiguration {
 
     @Bean
     public StoreClient storeClient() {
