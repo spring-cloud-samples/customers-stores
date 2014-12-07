@@ -1,6 +1,11 @@
 Customer Stores User Interface
 ==============================
 
+## Prerequisites
+
+- Make sure you have [Spring Boot for Groovy installed] (http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#getting-started-gvm-cli-installation)
+- Make sure [Spring Cloud CLI is installed] (https://github.com/spring-cloud/spring-cloud-cli)
+
 ## How to Run
 
 Right now the easiest way to run the UI is to use Spring Boot.
