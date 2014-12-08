@@ -1,0 +1,26 @@
+server:
+  port: 9900
+logging:
+  level:
+    com.netflix.discovery: OFF
+    com.netflix.zuul: OFF
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+  client:
+    registryFetchIntervalSeconds: 5
+
+ribbon:
+  ServerListRefreshInterval: 5000
+
+zuul:
+  routes:
+    stores:
+      serviceId: stores
+      path: /stores/**
+      strip-prefix: false
+    customers:
+      serviceId: customers
+      path: /customers/**
+      strip-prefix: false

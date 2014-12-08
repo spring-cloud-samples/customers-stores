@@ -145,21 +145,21 @@ module.exports = function (grunt) {
       },
       proxies: [
         {
-          context: ['/proxy/customers'],
+          context: ['/customers'],
           host: 'localhost',
           port: 9000,
           changeOrigin: true,
           rewrite: {
-            '^/proxy/customers': '/customers'
+            '^/customers': '/customers'
           }
         },
         {
-          context: ['/proxy/stores'],
+          context: ['/stores'],
           host: 'localhost',
           port: 8081,
           changeOrigin: true,
           rewrite: {
-            '^/proxy/stores': '/stores'
+            '^/stores': '/stores'
           }
         }
       ]

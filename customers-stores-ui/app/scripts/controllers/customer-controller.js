@@ -211,16 +211,16 @@ angular.module('customersStoresUiApp')
       };
       $log.info('Map Data', $scope.Map);
 
-      $scope.findStoresNearby($scope.customer.address.location);
+      $scope.findStoresNearby($scope.customer._links["stores-nearby"].href);
     });
 
     $scope.goBack = function () {
       $state.go('customers');
     };
-    $scope.findStoresNearby = function (location) {
-      if (location) {
-        $log.info('Which Starbucks location are close to', location);
-        var locationPromise = $http.get(appConfiguration.storeApiUrl + '/stores/search/findByAddressLocationNear?location=' + location.latitude + ',' + location.longitude);
+    $scope.findStoresNearby = function (url) {
+      if (url) {
+        $log.info('Which Starbucks location are close to', url);
+        var locationPromise = $http.get(url);
         locationPromise.then(function(locations) {
           $log.info('Nearby locations', locations);
           if (locations.data._embedded) {

@@ -1,6 +1,12 @@
 server:
   port: 9000
 
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+
 integration:
   stores:
     uri: http://localhost:8081
