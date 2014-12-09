@@ -15,10 +15,13 @@
  */
 package example.customers.integration;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import java.net.URI;
+import java.util.Map;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.client.ServiceInstance;
@@ -29,8 +32,7 @@ import org.springframework.hateoas.client.Traverson;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
-import java.net.URI;
-import java.util.Map;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
  * @author Oliver Gierke
@@ -79,7 +81,6 @@ public class StoreIntegration {
 		return link;
 	}
 
-    @SuppressWarnings("unused")
 	public Link defaultLink(Map<String, Object> parameters, HttpHeaders headers) {
 		return null;
 	}
