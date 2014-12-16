@@ -4,7 +4,9 @@ logging:
   level:
     com.netflix.discovery: OFF
     com.netflix.zuul: OFF
-
+endpoints:
+  health:
+    sensitive: false
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 10

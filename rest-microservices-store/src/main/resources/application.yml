@@ -7,6 +7,8 @@ endpoints:
     enabled: true
   shutdown:
     enabled: true
+  health:
+    sensitive: false
 
 spring:
   data:
