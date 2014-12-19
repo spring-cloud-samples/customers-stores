@@ -18,11 +18,6 @@
 	
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-cloudfoundry</artifactId>
 		</dependency>
 
@@ -36,11 +31,6 @@
 			<artifactId>spring-boot-starter-batch</artifactId>
 		</dependency>
 		
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-core</artifactId>
