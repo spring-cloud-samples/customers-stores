@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>de.olivergierke.samples.rest</groupId>
 		<artifactId>rest-microservices</artifactId>
-		<version>1.0.0.BUILD-SNAPSHOT</version>
+		<version>1.0.0.RC1</version>
 	</parent>
 	
 	<artifactId>rest-microservices-store</artifactId>
