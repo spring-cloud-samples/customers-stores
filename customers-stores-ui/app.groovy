@@ -1,4 +1,5 @@
 @EnableZuulProxy
+@EnableDiscoveryClient
 @Controller
 class Application extends WebMvcConfigurerAdapter {
   void addResourceHandlers(ResourceHandlerRegistry registry) {
