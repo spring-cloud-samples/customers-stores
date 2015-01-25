@@ -16,9 +16,11 @@
 package example.customers.integration;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,9 +31,9 @@ import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Strings;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
@@ -40,26 +42,24 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 @Component
 @Slf4j
 @ConfigurationProperties("integration.stores")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StoreIntegration {
 
-	private LoadBalancerClient loadBalancer;
-
-    @Autowired
-	public StoreIntegration(LoadBalancerClient loadBalancer) {
-        this.loadBalancer = loadBalancer;
-	}
+	private final LoadBalancerClient loadBalancer;
 
 	@Getter
 	@Setter
 	private String uri = "http://localhost:8081/stores";
 
 	@HystrixCommand(fallbackMethod = "defaultLink")
-	public Link getStoresByLocationLink(Map<String, Object> parameters, HttpHeaders headers) {
+	public Link getStoresByLocationLink(Map<String, Object> parameters, String host) {
 		URI storesUri = URI.create(uri);
 
+		ServiceInstance instance = null;
 		try {
-            ServiceInstance instance = loadBalancer.choose("stores");
-			storesUri = URI.create(String.format("http://%s:%s", instance.getHost(), instance.getPort()));
+			instance = loadBalancer.choose("stores");
+			storesUri = URI.create(String.format("http://%s:%s", instance.getHost(),
+					instance.getPort()));
 		}
 		catch (RuntimeException e) {
 			// Eureka not available
@@ -67,21 +67,68 @@ public class StoreIntegration {
 
 		log.info("Trying to access the stores system at {}…", storesUri);
 
-        //TODO: all of the above could be replaced with restTemplate/ribbon
-        //The uri would be http://stores
-        //traverson.setRestOperations and stuff from Traverson.createDefaultTemplate
+		// TODO: all of the above could be replaced with restTemplate/ribbon
+		// The uri would be http://stores
+		// traverson.setRestOperations and stuff from Traverson.createDefaultTemplate
 		Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
 
-        Link link = traverson.follow("stores", "search", "by-location")
-                .withHeaders(headers)
+		Link link = traverson.follow("stores", "search", "by-location")
 				.withTemplateParameters(parameters).asLink();
 
-		log.info("Found stores-by-location link pointing to {}.", link.getHref());
+		String href = link.getHref();
+ 		if (host!=null && instance != null) {
+			href = reconstructURI(host, href);
+		}
+		log.info("Found stores-by-location link pointing to {}.", href);
 
-		return link;
+		return new Link(href, link.getRel());
 	}
 
-	public Link defaultLink(Map<String, Object> parameters, HttpHeaders headers) {
+	private String reconstructURI(String host, String href) {
+		URI original;
+		try {
+			original = new URI(href);
+		}
+		catch (URISyntaxException e) {
+			throw new IllegalArgumentException("Cannot create URI from: " + href);
+		}
+		int port = 80;
+		if ("https".equals(original.getScheme())) {
+			port = 443;
+		}
+		if (host.contains(":")) {
+			String[] pair = host.split(":");
+			host = pair[0];
+			port = Integer.valueOf(pair[1]);
+		}
+		if (host.equals(original.getHost()) && port == original.getPort()) {
+			return href;
+		}
+		String scheme = original.getScheme();
+		if (scheme == null) {
+			scheme = port == 443 ? "https" : "http";
+		}
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(scheme).append("://");
+		if (!Strings.isNullOrEmpty(original.getRawUserInfo())) {
+			sb.append(original.getRawUserInfo()).append("@");
+		}
+		sb.append(host);
+		if (port >= 0) {
+			sb.append(":").append(port);
+		}
+		sb.append(original.getRawPath());
+		if (!Strings.isNullOrEmpty(original.getRawQuery())) {
+			sb.append("?").append(original.getRawQuery());
+		}
+		if (!Strings.isNullOrEmpty(original.getRawFragment())) {
+			sb.append("#").append(original.getRawFragment());
+		}
+		return sb.toString();
+	}
+
+	public Link defaultLink(Map<String, Object> parameters, String host) {
 		return null;
 	}
 }

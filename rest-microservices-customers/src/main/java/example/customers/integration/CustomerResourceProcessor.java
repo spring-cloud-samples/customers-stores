@@ -15,21 +15,22 @@
  */
 package example.customers.integration;
 
-import example.customers.Customer;
-import example.customers.Location;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Provider;
+import javax.servlet.http.HttpServletRequest;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceProcessor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Provider;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import example.customers.Customer;
+import example.customers.Location;
 
 /**
  * @author Oliver Gierke
@@ -38,9 +39,9 @@ import java.util.Map;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerResourceProcessor implements ResourceProcessor<Resource<Customer>> {
 
-    private static final String X_FORWARDED_HOST = "X-Forwarded-Host";
+	private static final String X_FORWARDED_HOST = "X-Forwarded-Host";
     private final StoreIntegration storeIntegration;
-    private final Provider<HttpServletRequest> requestProvider;
+    private final Provider<HttpServletRequest> request;
 
 	@Override
 	public Resource<Customer> process(Resource<Customer> resource) {
@@ -48,17 +49,11 @@ public class CustomerResourceProcessor implements ResourceProcessor<Resource<Cus
 		Customer customer = resource.getContent();
 		Location location = customer.getAddress().getLocation();
 
-        HttpHeaders headers = new HttpHeaders();
-
-        String header = requestProvider.get().getHeader(X_FORWARDED_HOST);
-        if (header != null) {
-            headers.put(X_FORWARDED_HOST, Collections.singletonList(header));
-        }
-
         Map<String, Object> parameters = new HashMap<>();
     	parameters.put("location", String.format("%s,%s", location.getLatitude(), location.getLongitude()));
     	parameters.put("distance", "50");
-		Link link = storeIntegration.getStoresByLocationLink(parameters, headers);
+        String host = request.get().getHeader(X_FORWARDED_HOST);
+		Link link = storeIntegration.getStoresByLocationLink(parameters, host);
         if (link != null) {
             resource.add(link.withRel("stores-nearby"));
         }
