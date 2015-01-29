@@ -15,11 +15,12 @@
  */
 package example.stores;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.cloudfoundry.web.EnableStickyFilter;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
@@ -30,8 +31,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-
 /**
  * Spring configuration class main application bootstrap point.
  * 
@@ -40,7 +39,6 @@ import java.util.List;
 @EnableAutoConfiguration
 @ComponentScan
 @EnableDiscoveryClient
-@EnableStickyFilter
 @Import(RepositoryRestMvcConfiguration.class)
 public class StoreApp extends RepositoryRestMvcConfiguration {
 
