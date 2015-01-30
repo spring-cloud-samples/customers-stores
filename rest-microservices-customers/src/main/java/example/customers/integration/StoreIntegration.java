@@ -32,8 +32,8 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import com.google.common.base.Strings;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
@@ -111,7 +111,7 @@ public class StoreIntegration {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append(scheme).append("://");
-		if (!Strings.isNullOrEmpty(original.getRawUserInfo())) {
+		if (StringUtils.hasText(original.getRawUserInfo())) {
 			sb.append(original.getRawUserInfo()).append("@");
 		}
 		sb.append(host);
@@ -119,10 +119,10 @@ public class StoreIntegration {
 			sb.append(":").append(port);
 		}
 		sb.append(original.getRawPath());
-		if (!Strings.isNullOrEmpty(original.getRawQuery())) {
+		if (StringUtils.hasText(original.getRawQuery())) {
 			sb.append("?").append(original.getRawQuery());
 		}
-		if (!Strings.isNullOrEmpty(original.getRawFragment())) {
+		if (StringUtils.hasText(original.getRawFragment())) {
 			sb.append("#").append(original.getRawFragment());
 		}
 		return sb.toString();
