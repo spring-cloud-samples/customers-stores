@@ -2,8 +2,8 @@ server:
   port: 9900
 logging:
   level:
-    com.netflix.discovery: OFF
-    com.netflix.zuul: OFF
+    com.netflix.discovery: 'OFF'
+    com.netflix.zuul: 'OFF'
 endpoints:
   health:
     sensitive: false
