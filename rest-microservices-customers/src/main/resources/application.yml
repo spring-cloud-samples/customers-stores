@@ -39,3 +39,15 @@ hystrix:
 logging:
   level:
     com.netflix.discovery: 'OFF'
+
+---
+spring:
+  profiles: mysql
+  datasource:
+    url: jdbc:mysql://localhost/test
+    username: root
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
