@@ -58,8 +58,10 @@ public class StoreIntegration {
 		ServiceInstance instance = null;
 		try {
 			instance = loadBalancer.choose("stores");
-			storesUri = URI.create(String.format("http://%s:%s", instance.getHost(),
-					instance.getPort()));
+			if (instance != null) {
+				storesUri = URI.create(String.format("http://%s:%s", instance.getHost(),
+						instance.getPort()));
+			}
 		}
 		catch (RuntimeException e) {
 			// Eureka not available
