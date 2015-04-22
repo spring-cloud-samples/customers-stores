@@ -13,7 +13,9 @@ endpoints:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost/stores
+      uri: ${vcap.services.${PREFIX:}mongodb.credentials.uri:mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/stores}
+  rabbitmq:
+    addresses: ${vcap.services.${PREFIX:}rabbitmq.credentials.uri:amqp://${RABBITMQ_HOST:localhost}:${RABBITMQ_PORT:5672}}
 
 eureka:
   instance:

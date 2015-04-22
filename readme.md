@@ -19,3 +19,10 @@
 To use these projects in an IDE you will need the [project Lombok](http://projectlombok.org/features/index.html) agent. Full instructions can be found in the Lombok website. The
 sign that you need to do this is a lot of compiler errors to do with
 missing methods and fields.
+
+## Docker and Lattice
+
+```
+$ ltc create --memory-mb 0 --timeout 5m -e RABBITMQ_HOST=10.0.1.170 -e RABBITMQ_PORT=61001 customers springcloud/customers
+$ ltc create --memory-mb 0 --timeout 5m -e MONGODB_HOST=10.0.1.170 -e MONGODB_PORT=61002 -e RABBITMQ_HOST=10.0.1.170 -e RABBITMQ_PORT=61001 stores springcloud/stores
+```

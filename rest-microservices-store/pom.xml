@@ -12,6 +12,7 @@
 	
 	<properties>
 		<mongodb.version>2.12.1</mongodb.version>
+		<docker.image.name>stores</docker.image.name>
 	</properties>
 	
 	<dependencies>

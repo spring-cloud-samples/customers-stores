@@ -9,6 +9,10 @@
 	</parent>
 
 	<artifactId>rest-microservices-customers</artifactId>
+	
+	<properties>
+		<docker.image.name>customers</docker.image.name>
+	</properties>
 
 	<dependencies>
 	

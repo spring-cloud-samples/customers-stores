@@ -22,6 +22,7 @@
 	<properties>
 		<java.version>1.7</java.version>
 		<spring-cloud.version>1.0.1.BUILD-SNAPSHOT</spring-cloud.version>
+		<docker.image.prefix>springcloud</docker.image.prefix>
 	</properties>
 
 	<dependencyManagement>
@@ -91,6 +92,22 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.2.3</version>
+				<configuration>
+					<imageName>${docker.image.prefix}/${docker.image.name}</imageName>
+					<dockerDirectory>src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
