@@ -1,10 +1,10 @@
-FROM    dsyer/maven
+FROM    java:7
 
+VOLUME /tmp
 MAINTAINER dsyer@pivotal.io
 
-USER user
-WORKDIR /home/user/scripts
+ADD app.jar /app.jar
+RUN bash -c 'touch /app.jar'
 
-RUN sed -i -e 's/answer=false/answer=true/' /home/user/.gvm/etc/config && bash -lc 'gvm install springboot 1.1.5.RELEASE'
-
-CMD bash -c 'echo "Hello World"'
+EXPOSE 9900
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]

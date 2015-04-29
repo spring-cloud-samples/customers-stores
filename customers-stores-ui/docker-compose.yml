@@ -1,0 +1,6 @@
+customersui:
+  image: springcloud/customersui
+  ports:
+    - "9900:9900"
+  environment:
+    - CONFIG_SERVER_URI
