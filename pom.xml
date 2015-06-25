@@ -21,7 +21,7 @@
 
 	<properties>
 		<java.version>1.7</java.version>
-		<spring-cloud.version>1.0.2.BUILD-SNAPSHOT</spring-cloud.version>
+		<spring-cloud.version>Angel.BUILD-SNAPSHOT</spring-cloud.version>
 		<docker.image.prefix>springcloud</docker.image.prefix>
 	</properties>
 
