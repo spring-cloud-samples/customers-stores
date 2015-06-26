@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-starter-parent</artifactId>
-		<version>1.0.2.BUILD-SNAPSHOT</version>
+		<version>1.0.3.BUILD-SNAPSHOT</version>
 	</parent>
 
 	<groupId>de.olivergierke.samples.rest</groupId>
 	<artifactId>rest-microservices</artifactId>
-	<version>1.0.2.BUILD-SNAPSHOT</version>
+	<version>1.0.3.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>REST Microservices</name>
 
