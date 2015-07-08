@@ -15,12 +15,14 @@
  */
 package example.customers;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
 /**
  * @author Oliver Gierke
@@ -28,11 +30,14 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 @SpringBootApplication
 @EnableCircuitBreaker
 @EnableDiscoveryClient
-public class CustomerApp extends RepositoryRestMvcConfiguration {
-	
-	@Override
-	protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-		config.exposeIdsFor(Customer.class);
+public class CustomerApp {
+
+	@Autowired
+	private RepositoryRestConfiguration repositoryRestConfiguration;
+
+	@PostConstruct
+	public void exposeIds() {
+		this.repositoryRestConfiguration.exposeIdsFor(Customer.class);
 	}
 
 	public static void main(String[] args) {
