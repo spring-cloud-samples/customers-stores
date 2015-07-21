@@ -40,8 +40,8 @@ import example.customers.Location;
 public class CustomerResourceProcessor implements ResourceProcessor<Resource<Customer>> {
 
 	private static final String X_FORWARDED_HOST = "X-Forwarded-Host";
-    private final StoreIntegration storeIntegration;
-    private final Provider<HttpServletRequest> request;
+	private final StoreIntegration storeIntegration;
+	private final Provider<HttpServletRequest> request;
 
 	@Override
 	public Resource<Customer> process(Resource<Customer> resource) {
@@ -49,14 +49,14 @@ public class CustomerResourceProcessor implements ResourceProcessor<Resource<Cus
 		Customer customer = resource.getContent();
 		Location location = customer.getAddress().getLocation();
 
-        Map<String, Object> parameters = new HashMap<>();
-    	parameters.put("location", String.format("%s,%s", location.getLatitude(), location.getLongitude()));
-    	parameters.put("distance", "50");
-        String host = request.get().getHeader(X_FORWARDED_HOST);
-		Link link = storeIntegration.getStoresByLocationLink(parameters, host);
-        if (link != null) {
-            resource.add(link.withRel("stores-nearby"));
-        }
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("location", String.format("%s,%s", location.getLatitude(), location.getLongitude()));
+		parameters.put("distance", "50km");
+		String host = this.request.get().getHeader(X_FORWARDED_HOST);
+		Link link = this.storeIntegration.getStoresByLocationLink(parameters, host);
+		if (link != null) {
+			resource.add(link.withRel("stores-nearby"));
+		}
 
 		return resource;
 	}
