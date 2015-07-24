@@ -156,6 +156,13 @@
 
 	<pluginRepositories>
         <pluginRepository>
+            <id>spring-libs-snapshots</id>
+            <url>http://repo.spring.io/libs-snapshot-local</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+        </pluginRepository>
+        <pluginRepository>
             <id>spring-libs-milestones</id>
             <url>http://repo.spring.io/libs-milestone-local</url>
         </pluginRepository>
