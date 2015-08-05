@@ -15,10 +15,6 @@
  */
 package example.stores;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -32,9 +28,13 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * Spring configuration class main application bootstrap point.
@@ -44,14 +44,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @EnableAutoConfiguration
 @ComponentScan
 @EnableDiscoveryClient
-public class StoreApp {
+public class StoreApp extends RepositoryRestConfigurerAdapter {
 
-	@Autowired
-	private RepositoryRestConfiguration repositoryRestConfiguration;
+    @Override
+    public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
+        config.exposeIdsFor(Store.class);
+    }
 
-	@PostConstruct
+    @PostConstruct
 	public void exposeIds() {
-		this.repositoryRestConfiguration.exposeIdsFor(Store.class);
 	}
 
 	public static void main(String[] args) {
