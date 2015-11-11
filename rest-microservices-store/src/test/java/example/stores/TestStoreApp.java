@@ -36,7 +36,7 @@ public class TestStoreApp {
 		}
 	}
 
-	@FeignClient(url = "http://localhost:8081")
+	@FeignClient(name = "stores", url = "http://localhost:8081")
 	public interface StoreClient {
 		@RequestMapping(method = RequestMethod.GET, value = "/simple/stores")
 		List<Map<String, ?>> getStores();
