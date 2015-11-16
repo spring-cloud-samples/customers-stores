@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-starter-parent</artifactId>
-		<version>1.0.3.BUILD-SNAPSHOT</version>
+		<version>Angel.SR4</version>
 	</parent>
 
 	<groupId>de.olivergierke.samples.rest</groupId>
 	<artifactId>rest-microservices</artifactId>
-	<version>1.0.3.BUILD-SNAPSHOT</version>
+	<version>1.0.3.RELEASE</version>
 	<packaging>pom</packaging>
 	<name>REST Microservices</name>
 
@@ -21,7 +21,7 @@
 
 	<properties>
 		<java.version>1.7</java.version>
-		<spring-cloud.version>Angel.BUILD-SNAPSHOT</spring-cloud.version>
+		<spring-cloud.version>Angel.SR4</spring-cloud.version>
 		<docker.image.prefix>springcloud</docker.image.prefix>
 	</properties>
 
