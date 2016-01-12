@@ -23,17 +23,23 @@
 		<java.version>1.7</java.version>
 		<spring-cloud.version>Brixton.BUILD-SNAPSHOT</spring-cloud.version>
 		<docker.image.prefix>springcloud</docker.image.prefix>
+        <lombok.version>1.16.6</lombok.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-parent</artifactId>
+				<artifactId>spring-cloud-starter-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+	        <dependency>
+		      <groupId>org.projectlombok</groupId>
+		      <artifactId>lombok</artifactId>
+		      <version>${lombok.version}</version>
+	        </dependency>
 		</dependencies>
 	</dependencyManagement>
 
