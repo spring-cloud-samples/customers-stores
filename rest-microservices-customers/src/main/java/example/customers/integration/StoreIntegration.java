@@ -52,7 +52,7 @@ public class StoreIntegration {
 	private String uri = "http://localhost:8081/stores";
 
 	@HystrixCommand(fallbackMethod = "defaultLink")
-	public Link getStoresByLocationLink(Map<String, Object> parameters, String host) {
+	public Link getStoresByLocationLink(Map<String, Object> parameters, String host, Integer port) {
 		URI storesUri = URI.create(uri);
 
 		ServiceInstance instance = null;
@@ -78,15 +78,37 @@ public class StoreIntegration {
 				.withTemplateParameters(parameters).asLink();
 
 		String href = link.getHref();
- 		if (host!=null && instance != null) {
-			href = reconstructURI(host, href);
+ 		if (host!=null && port!=null && instance != null) {
+			href = reconstructURI(host, port, href);
 		}
 		log.info("Found stores-by-location link pointing to {}.", href);
 
 		return new Link(href, link.getRel());
 	}
 
-	private String reconstructURI(String host, String href) {
+	/**
+	 *
+	 * The original URL points to the store service's URL given by Eureka: 192.168.0.3:8081. Since this URL is used by
+	 * the client application (on localhost:9900) to make an AJAX call to retrieve the nearby stores, the browser will
+	 * not allow the call:
+	 * <pre>
+	 * XMLHttpRequest cannot load http://192.168.0.3:8081/stores/search/findByAddressLocationNear?location=42.3600825,-71.05888010000001&distance=50km.
+	 * No 'Access-Control-Allow-Origin' header is present on the requested resource.
+	 * Origin 'http://localhost:9900' is therefore not allowed access.
+	 *</pre>
+	 *
+	 * This method rewrites the URL to point to the edge server: localhost:9900 and let it re-route the request.
+	 *
+	 * As it is stated on http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html,
+	 * <pre>
+	 * Spring Cloud has created an embedded Zuul proxy to ease the development of a very common use case where a UI application
+	 * wants to proxy calls to one or more back end services.
+	 * This feature is useful for a user interface to proxy to the backend services it requires, avoiding the need
+	 * to manage CORS and authentication concerns independently for all the backends.
+	 * </pre>
+	 *
+	 */
+	private String reconstructURI(String host, Integer port, String href) {
 		URI original;
 		try {
 			original = new URI(href);
@@ -94,7 +116,8 @@ public class StoreIntegration {
 		catch (URISyntaxException e) {
 			throw new IllegalArgumentException("Cannot create URI from: " + href);
 		}
-		int port = 80;
+		//No web server is listening on port 80
+		//int port = 80;
 		if ("https".equals(original.getScheme())) {
 			port = 443;
 		}
@@ -130,7 +153,7 @@ public class StoreIntegration {
 		return sb.toString();
 	}
 
-	public Link defaultLink(Map<String, Object> parameters, String host) {
+	public Link defaultLink(Map<String, Object> parameters, String host, Integer port) {
 		return null;
 	}
 }
