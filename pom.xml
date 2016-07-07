@@ -135,7 +135,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -148,14 +147,25 @@
 		<repository>
 			<id>repo.spring.io-milestones</id>
 			<name>repo.spring.io-milestones</name>
-			<url>http://repo.spring.io/libs-milestone-local</url>
+			<url>http://repo.spring.io/libs-milestone</url>
 		</repository>
 		<repository>
 			<id>repo.spring.io-snapshots</id>
 			<name>repo.spring.io-snapshots</name>
-			<url>http://repo.spring.io/libs-snapshot-local</url>
+			<url>http://repo.spring.io/libs-snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2</url>
+			<name>Maven Plugin Repository</name>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 	</repositories>
@@ -163,18 +173,18 @@
 	<pluginRepositories>
         <pluginRepository>
             <id>spring-libs-snapshots</id>
-            <url>http://repo.spring.io/libs-snapshot-local</url>
+            <url>http://repo.spring.io/libs-snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
         </pluginRepository>
         <pluginRepository>
             <id>spring-libs-milestones</id>
-            <url>http://repo.spring.io/libs-milestone-local</url>
+            <url>http://repo.spring.io/libs-milestone</url>
         </pluginRepository>
 		<pluginRepository>
 			<id>spring-libs-release</id>
-			<url>http://repo.spring.io/libs-release-local</url>
+			<url>http://repo.spring.io/libs-release</url>
 		</pluginRepository>
 	</pluginRepositories>
 
