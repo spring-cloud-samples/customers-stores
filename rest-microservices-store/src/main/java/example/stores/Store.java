@@ -18,7 +18,9 @@ package example.stores;
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.redis.core.RedisHash;
+
+import java.io.Serializable;
 
 /**
  * Entity to represent a {@link Store}.
@@ -26,8 +28,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author Oliver Gierke
  */
 @Data
-@Document
-public class Store {
+@RedisHash("stores")
+public class Store implements Serializable {
 
 	private final @Id String id;
 	private final String name;

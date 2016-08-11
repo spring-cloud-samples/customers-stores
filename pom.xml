@@ -3,12 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.springframework.cloud</groupId>
-		<artifactId>spring-cloud-starter-parent</artifactId>
-		<version>Brixton.BUILD-SNAPSHOT</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.0.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>de.olivergierke.samples.rest</groupId>
+	<groupId>springcloud.samples.rest</groupId>
 	<artifactId>rest-microservices</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -21,7 +22,10 @@
 
 	<properties>
 		<java.version>1.7</java.version>
-		<spring-cloud.version>Brixton.BUILD-SNAPSHOT</spring-cloud.version>
+		<spring-cloud.version>Camden.BUILD-SNAPSHOT</spring-cloud.version>
+		<spring-data-releasetrain.version>Ingalls-M1</spring-data-releasetrain.version>
+		<spring-hateoas.version>0.21.0.RELEASE</spring-hateoas.version>
+		<jedis.version>2.9.0</jedis.version>
 		<docker.image.prefix>springcloud</docker.image.prefix>
 	</properties>
 
@@ -29,7 +33,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-parent</artifactId>
+				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -143,6 +147,9 @@
 			<id>repo.spring.io-milestones</id>
 			<name>repo.spring.io-milestones</name>
 			<url>http://repo.spring.io/libs-milestone-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>repo.spring.io-snapshots</id>

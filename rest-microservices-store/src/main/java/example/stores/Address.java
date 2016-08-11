@@ -15,19 +15,30 @@
  */
 package example.stores;
 
-import lombok.Value;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.geo.Point;
-import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+
+import java.io.Serializable;
+// import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 
 /**
  * Value object to represent an {@link Address}.
  * 
  * @author Oliver Gierke
  */
-@Value
-public class Address {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Address implements Serializable {
 
-	private final String street, city, zip;
-	private final @GeoSpatialIndexed Point location;
+	private String street, city, zip;
+	// private /*@GeoSpatialIndexed*/ Point location;
+	private Double x, y;
+
+
+	Point getLocation() {
+		return new Point(x, y);
+	}
 }

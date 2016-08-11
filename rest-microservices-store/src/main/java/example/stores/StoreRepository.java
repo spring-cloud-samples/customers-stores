@@ -15,13 +15,8 @@
  */
 package example.stores;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Point;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
  * Repository interface for out-of-the-box paginating access to {@link Store}s and a query method to find stores by
@@ -29,9 +24,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
  * 
  * @author Oliver Gierke
  */
-public interface StoreRepository extends PagingAndSortingRepository<Store, String> {
+public interface StoreRepository extends CrudRepository<Store, String> /*PagingAndSortingRepository<Store, String>*/, StoreRepositoryCustom {
 
-	@RestResource(rel = "by-location")
-	Page<Store> findByAddressLocationNear(
-			@Param("location") Point location, @Param("distance") Distance distance, Pageable pageable);
+
 }

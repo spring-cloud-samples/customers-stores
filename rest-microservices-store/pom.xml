@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>de.olivergierke.samples.rest</groupId>
+		<groupId>springcloud.samples.rest</groupId>
 		<artifactId>rest-microservices</artifactId>
 		<version>1.0.0.BUILD-SNAPSHOT</version>
 	</parent>
@@ -19,7 +19,7 @@
 	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 		
 		<dependency>
@@ -30,6 +30,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-batch</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-jdbc</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>

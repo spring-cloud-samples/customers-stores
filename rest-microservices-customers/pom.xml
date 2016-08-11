@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>de.olivergierke.samples.rest</groupId>
+		<groupId>springcloud.samples.rest</groupId>
 		<artifactId>rest-microservices</artifactId>
 		<version>1.0.0.BUILD-SNAPSHOT</version>
 	</parent>

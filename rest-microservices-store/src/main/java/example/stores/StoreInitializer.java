@@ -15,12 +15,7 @@
  */
 package example.stores;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
@@ -29,11 +24,17 @@ import org.springframework.batch.item.file.separator.DefaultRecordSeparatorPolic
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.geo.Point;
-import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.redis.core.BoundGeoOperations;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Component initializing a hand full of Starbucks stores and persisting them through a {@link StoreRepository}.
@@ -45,16 +46,24 @@ import org.springframework.validation.BindException;
 public class StoreInitializer {
 
 	@Autowired
-	public StoreInitializer(StoreRepository repository, MongoOperations operations) throws Exception {
+	public StoreInitializer(StoreRepository repository, @Qualifier("redisTemplate") RedisOperations operations) throws Exception {
 
 		if (repository.count() != 0) {
 			return;
 		}
 
 		List<Store> stores = readStores();
-		log.info("Importing {} stores into MongoDB…", stores.size());
+		log.info("Importing {} stores using {}…", stores.size(), operations.getClass().getSimpleName());
 		repository.save(stores);
+		saveAddressGeo(stores, operations);
 		log.info("Successfully imported {} stores.", repository.count());
+	}
+
+	private void saveAddressGeo(List<Store> stores, RedisOperations operations) {
+		BoundGeoOperations geoOps = operations.boundGeoOps("stores_geo");
+		for (Store store : stores) {
+			geoOps.geoAdd(store.getAddress().getLocation(), store);
+		}
 	}
 
 	/**
@@ -103,7 +112,7 @@ public class StoreInitializer {
 		return stores;
 	}
 
-	private static enum StoreFieldSetMapper implements FieldSetMapper<Store> {
+	private enum StoreFieldSetMapper implements FieldSetMapper<Store> {
 
 		INSTANCE;
 
@@ -114,9 +123,9 @@ public class StoreInitializer {
 		@Override
 		public Store mapFieldSet(FieldSet fields) throws BindException {
 
-			Point location = new Point(fields.readDouble("Longitude"), fields.readDouble("Latitude"));
+			// Point location = new Point(fields.readDouble("Longitude"), fields.readDouble("Latitude"));
 			Address address = new Address(fields.readString("Street Address"), fields.readString("City"),
-					fields.readString("Zip"), location);
+					fields.readString("Zip"), fields.readDouble("Longitude"), fields.readDouble("Latitude"));
 
 			return new Store(fields.readString("Name"), address);
 		}
