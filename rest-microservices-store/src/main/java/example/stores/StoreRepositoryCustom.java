@@ -1,5 +1,7 @@
 package example.stores;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.Point;
@@ -16,4 +18,11 @@ public interface StoreRepositoryCustom {
 
 	@RestResource(rel = "by-location")
 	List<GeoResult<RedisGeoCommands.GeoLocation<Store>>> findNear(@Param("location") Point location, @Param("distance") Distance distance);
+
+	/**
+	 * Returns all instances of the type.
+	 *
+	 * @return all entities
+	 */
+	Page<Store> findAll(Pageable pageable);
 }
