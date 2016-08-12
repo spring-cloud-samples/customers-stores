@@ -18,7 +18,6 @@ package example.stores;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudFactory;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -32,9 +31,12 @@ import org.springframework.data.geo.Point;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.hateoas.Resources;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,6 +73,17 @@ public class StoreApp extends RepositoryRestConfigurerAdapter {
 		return new JedisConnectionFactory();
 	}
 
+	@Bean
+	public ResourceProcessor<Resources<Store>> storeProcessor() {
+		return new ResourceProcessor<Resources<Store>>() {
+			@Override
+			public Resources<Store> process(Resources<Store> resources) {
+				resources.add(new Link("http://localhost:8081/stores/search", "search"));
+				return resources;
+			}
+		};
+	}
+
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
         config.exposeIdsFor(Store.class);
@@ -84,16 +97,32 @@ public class StoreApp extends RepositoryRestConfigurerAdapter {
 		SpringApplication.run(StoreApp.class, args);
 	}
 
+	// @RepositoryRestController
+	public static class CustomStoreSearch {
+		@Autowired
+		StoreRepository repository;
+
+		@RequestMapping("/stores")
+		@ResponseBody
+		PagedResources<Store> findall(@RequestParam(value = "page", defaultValue = "0") int page,
+									  @RequestParam(value = "size", defaultValue = "20") int size) {
+			Page<Store> stores = this.repository.findAll(new PageRequest(page, size));
+			return new PagedResources<>(stores.getContent(),
+					new PagedResources.PageMetadata(size, page, stores.getContent().size()));
+					// new Link("http://localhost:8081/stores/search", "search"));
+		}
+
+		@RequestMapping("/stores/search/findByAddressLocationNear")
+		@ResponseBody
+		PagedResources<Store> findNear(@RequestParam("location") Point location, @RequestParam("distance") Distance distance) {
+			return this.repository.findAllStoreByAddress(location, distance);
+		}
+	}
+
     @Controller
     public static class SimpleStoresController {
         @Autowired
         StoreRepository repository;
-
-		@RequestMapping("/stores/search/findnear")
-		@ResponseBody
-		List<?> findNear(@RequestParam("location") Point location, @RequestParam("distance") Distance distance) {
-			return this.repository.findNear(location, distance);
-		}
 
         @RequestMapping("/simple/stores")
         @ResponseBody

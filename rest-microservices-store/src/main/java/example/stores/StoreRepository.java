@@ -16,7 +16,6 @@
 package example.stores;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * Repository interface for out-of-the-box paginating access to {@link Store}s and a query method to find stores by
@@ -25,6 +24,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author Oliver Gierke
  */
 public interface StoreRepository extends CrudRepository<Store, String> /*PagingAndSortingRepository<Store, String>*/, StoreRepositoryCustom {
-
 
 }

@@ -8,6 +8,7 @@ import org.springframework.data.geo.Point;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.hateoas.PagedResources;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 public interface StoreRepositoryCustom {
 
 	@RestResource(rel = "by-location")
-	List<GeoResult<RedisGeoCommands.GeoLocation<Store>>> findNear(@Param("location") Point location, @Param("distance") Distance distance);
+	PagedResources<Store> findAllStoreByAddress(@Param("location") Point location, @Param("distance") Distance distance);
 
 	/**
 	 * Returns all instances of the type.

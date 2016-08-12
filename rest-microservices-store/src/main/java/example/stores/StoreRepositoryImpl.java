@@ -3,6 +3,7 @@ package example.stores;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.Distance;
@@ -15,6 +16,8 @@ import org.springframework.data.redis.core.RedisKeyValueTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -37,18 +40,18 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 	}
 
 	@Override
-	public List<GeoResult<RedisGeoCommands.GeoLocation<Store>>> findNear(@Param("location") Point location, @Param("distance") Distance distance) {
+	public PagedResources<Store> findAllStoreByAddress(@Param("location") Point location, @Param("distance") Distance distance) {
 		GeoResults geoResults = this.redis.opsForGeo().geoRadius("stores_geo", new Circle(location, distance),
 				RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs()
 						.includeCoordinates()
 						.includeDistance()
 						.limit(10));
 		List<GeoResult<RedisGeoCommands.GeoLocation<Store>>> results = geoResults.getContent();
-		ArrayList<GeoResult<RedisGeoCommands.GeoLocation<Store>>> list = new ArrayList<>(results.size());
+		ArrayList<Store> stores = new ArrayList<>(results.size());
 		for (GeoResult<RedisGeoCommands.GeoLocation<Store>> store : results) {
-			list.add(store);
+			stores.add(store.getContent().getName());
 		}
-		return list;
+		return new PagedResources<>(stores, new PagedResources.PageMetadata(results.size(), 0, results.size()));
 		// return new PageImpl<>(new ArrayList<Store>(), pageable, results.size());
 	}
 
@@ -58,6 +61,9 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 	 * @return all entities
 	 */
 	public Page<Store> findAll(Pageable pageable) {
+		if (pageable == null) {
+			pageable = new PageRequest(0, 20);
+		}
 		ScanOptions options = new ScanOptions.ScanOptionsBuilder()
 				.match(STORES_KEY_PREFIX+"*")
 				.count(20)
@@ -70,7 +76,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 			String key = new String(cursor.next()).substring(STORES_KEY_PREFIX.length());
 			Store store = this.kv.findById(key, Store.class);
 			stores.add(store);
-			if (stores.size() >= 20) {
+			if (stores.size() >= pageable.getPageSize()) {
 				try {
 					cursor.close();
 				} catch (IOException e) {
