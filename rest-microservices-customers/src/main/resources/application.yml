@@ -1,6 +1,10 @@
 server:
   port: 9000
 
+management:
+  security:
+    enabled: false
+
 endpoints:
   restart:
     enabled: true
