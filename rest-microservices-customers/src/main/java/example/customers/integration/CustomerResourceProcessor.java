@@ -40,6 +40,7 @@ import example.customers.Location;
 public class CustomerResourceProcessor implements ResourceProcessor<Resource<Customer>> {
 
 	private static final String X_FORWARDED_HOST = "X-Forwarded-Host";
+	private static final String X_FORWARDED_PORT = "X-Forwarded-Port";
 	private final StoreIntegration storeIntegration;
 	private final Provider<HttpServletRequest> request;
 
@@ -53,7 +54,13 @@ public class CustomerResourceProcessor implements ResourceProcessor<Resource<Cus
 		parameters.put("location", String.format("%s,%s", location.getLatitude(), location.getLongitude()));
 		parameters.put("distance", "50km");
 		String host = this.request.get().getHeader(X_FORWARDED_HOST);
-		Link link = this.storeIntegration.getStoresByLocationLink(parameters, host);
+
+		Integer port = null;
+		if(this.request.get().getHeader(X_FORWARDED_PORT)!=null){
+			port = Integer.parseInt(this.request.get().getHeader(X_FORWARDED_PORT));
+		}
+
+		Link link = this.storeIntegration.getStoresByLocationLink(parameters, host, port);
 		if (link != null) {
 			resource.add(link.withRel("stores-nearby"));
 		}
