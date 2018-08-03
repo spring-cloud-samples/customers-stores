@@ -45,7 +45,7 @@ import org.springframework.validation.BindException;
 public class StoreInitializer {
 
 	@Autowired
-	public StoreInitializer(StoreRepository repository, MongoOperations operations) throws Exception {
+	public StoreInitializer(StoreRepository repository) throws Exception {
 
 		if (repository.count() != 0) {
 			return;
@@ -53,7 +53,7 @@ public class StoreInitializer {
 
 		List<Store> stores = readStores();
 		log.info("Importing {} stores into MongoDB…", stores.size());
-		repository.save(stores);
+		repository.saveAll(stores);
 		log.info("Successfully imported {} stores.", repository.count());
 	}
 

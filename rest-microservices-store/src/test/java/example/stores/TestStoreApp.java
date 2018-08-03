@@ -3,11 +3,12 @@ package example.stores;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,7 @@ public class TestStoreApp {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = new SpringApplicationBuilder()
-				.web(false).sources(TestStoreApp.class).run(args);
+				.web(WebApplicationType.NONE).sources(TestStoreApp.class).run(args);
 		StoreClient client = context.getBean(StoreClient.class);
 		List<Map<String, ?>> stores = client.getStores();
 		if (!stores.isEmpty()) {
