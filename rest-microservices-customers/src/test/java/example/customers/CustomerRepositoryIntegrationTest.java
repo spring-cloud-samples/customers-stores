@@ -45,6 +45,6 @@ public class CustomerRepositoryIntegrationTest {
 
 		customer = repository.save(customer);
 
-		assertThat(repository.findOne(customer.id), is(customer));
+		assertThat(repository.findById(customer.id), is(customer));
 	}
 }
