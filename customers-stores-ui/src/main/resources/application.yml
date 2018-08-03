@@ -1,0 +1,42 @@
+server:
+  port: 9900
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
+    com.netflix.zuul: 'OFF'
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+  client:
+    registryFetchIntervalSeconds: 5
+
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+ribbon:
+  ServerListRefreshInterval: 5000
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: stores
+          uri: lb://stores
+          predicates:
+            - Path=/stores/**
+        - id: customers
+          uri: lb://customers
+          predicates:
+          - Path=/customers/**
+        - id: root
+          uri: no://op
+          predicates:
+          - Path=/
+          filters:
+          - RedirectTo=302, /index.html#/customers
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
