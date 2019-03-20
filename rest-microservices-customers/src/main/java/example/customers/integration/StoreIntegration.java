@@ -59,7 +59,7 @@ public class StoreIntegration {
 		try {
 			instance = loadBalancer.choose("stores");
 			if (instance != null) {
-				storesUri = URI.create(String.format("http://%s:%s", instance.getHost(),
+				storesUri = URI.create(String.format("https://%s:%s", instance.getHost(),
 						instance.getPort()));
 			}
 		}
@@ -70,7 +70,7 @@ public class StoreIntegration {
 		log.info("Trying to access the stores system at {}…", storesUri);
 
 		// TODO: all of the above could be replaced with restTemplate/ribbon
-		// The uri would be http://stores
+		// The uri would be https://stores
 		// traverson.setRestOperations and stuff from Traverson.createDefaultTemplate
 		Traverson traverson = new Traverson(storesUri, MediaTypes.HAL_JSON);
 

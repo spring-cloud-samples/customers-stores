@@ -22,7 +22,7 @@ angular
     'google-maps'
   ])
   .constant('appConfiguration', {
-    //e.g. http://myserver:9000/rest
+    //e.g. https://myserver:9000/rest
     customerApiUrl: window.location.protocol + '//' + window.location.host,
     storeApiUrl: window.location.protocol + '//' + window.location.host
   })
