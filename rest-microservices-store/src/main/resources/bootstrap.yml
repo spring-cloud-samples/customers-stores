@@ -3,4 +3,4 @@ spring:
     name: stores
   cloud:
     config:
-      uri: ${CONFIG_SERVER_URI:${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}}
+      uri: ${CONFIG_SERVER_URI:${vcap.services.${PREFIX:}configserver.credentials.uri:https://user:password@localhost:8888}}

@@ -2,7 +2,7 @@
 
 # (!) Using `.htaccess` files slows down Apache, therefore, if you have access
 # to the main server config file (usually called `httpd.conf`), you should add
-# this logic there: http://httpd.apache.org/docs/current/howto/htaccess.html.
+# this logic there: https://httpd.apache.org/docs/current/howto/htaccess.html.
 
 # ##############################################################################
 # # CROSS-ORIGIN RESOURCE SHARING (CORS)                                       #
@@ -13,8 +13,8 @@
 # ------------------------------------------------------------------------------
 
 # Enable cross-origin AJAX requests.
-# http://code.google.com/p/html5security/wiki/CrossOriginRequestSecurity
-# http://enable-cors.org/
+# https://code.google.com/p/html5security/wiki/CrossOriginRequestSecurity
+# https://enable-cors.org/
 
 # <IfModule mod_headers.c>
 #    Header set Access-Control-Allow-Origin "*"
@@ -26,8 +26,8 @@
 
 # Send the CORS header for images when browsers request it.
 # https://developer.mozilla.org/en/CORS_Enabled_Image
-# http://blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html
-# http://hacks.mozilla.org/2011/11/using-cors-to-load-webgl-textures-from-cross-domain-images/
+# https://blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html
+# https://hacks.mozilla.org/2011/11/using-cors-to-load-webgl-textures-from-cross-domain-images/
 
 <IfModule mod_setenvif.c>
     <IfModule mod_headers.c>
@@ -61,8 +61,8 @@
 
 # Prevent Apache from returning a 404 error for a rewrite if a directory
 # with the same name does not exist.
-# http://httpd.apache.org/docs/current/content-negotiation.html#multiviews
-# http://www.webmasterworld.com/apache/3808792.htm
+# https://httpd.apache.org/docs/current/content-negotiation.html#multiviews
+# https://www.webmasterworld.com/apache/3808792.htm
 
 Options -MultiViews
 
@@ -71,7 +71,7 @@ Options -MultiViews
 # ------------------------------------------------------------------------------
 
 # You can customize what Apache returns to the client in case of an error (see
-# http://httpd.apache.org/docs/current/mod/core.html#errordocument), e.g.:
+# https://httpd.apache.org/docs/current/mod/core.html#errordocument), e.g.:
 
 ErrorDocument 404 /404.html
 
@@ -85,7 +85,7 @@ ErrorDocument 404 /404.html
 # ------------------------------------------------------------------------------
 
 # Force IE to render pages in the highest available mode in the various
-# cases when it may not: http://hsivonen.iki.fi/doctype/ie-mode.pdf.
+# cases when it may not: https://hsivonen.iki.fi/doctype/ie-mode.pdf.
 
 <IfModule mod_headers.c>
     Header set X-UA-Compatible "IE=edge"
@@ -135,7 +135,7 @@ ErrorDocument 404 /404.html
 
   # JavaScript
     # Normalize to standard type (it's sniffed in IE anyways):
-    # http://tools.ietf.org/html/rfc4329#section-7.2
+    # https://tools.ietf.org/html/rfc4329#section-7.2
     AddType application/javascript                      js jsonp
     AddType application/json                            json
 
@@ -203,10 +203,10 @@ AddDefaultCharset utf-8
 
 # If your web host doesn't allow the `FollowSymlinks` option, you may need to
 # comment it out and use `Options +SymLinksIfOwnerMatch` but, be aware of the
-# performance impact: http://httpd.apache.org/docs/current/misc/perf-tuning.html#symlinks
+# performance impact: https://httpd.apache.org/docs/current/misc/perf-tuning.html#symlinks
 
 # Also, some cloud hosting services require `RewriteBase` to be set:
-# http://www.rackspace.com/knowledge_center/frequently-asked-question/why-is-mod-rewrite-not-working-on-my-site
+# https://www.rackspace.com/knowledge_center/frequently-asked-question/why-is-mod-rewrite-not-working-on-my-site
 
 <IfModule mod_rewrite.c>
     Options +FollowSymlinks
@@ -239,7 +239,7 @@ AddDefaultCharset utf-8
 <IfModule mod_rewrite.c>
     RewriteCond %{HTTPS} !=on
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-    RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+    RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 </IfModule>
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -252,7 +252,7 @@ AddDefaultCharset utf-8
 # <IfModule mod_rewrite.c>
 #    RewriteCond %{HTTPS} !=on
 #    RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
-#    RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+#    RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 # </IfModule>
 
 
@@ -273,8 +273,8 @@ AddDefaultCharset utf-8
 # work as-is for your site!
 
 # To get all the details you'll need to craft a reasonable policy for your site,
-# read: http://html5rocks.com/en/tutorials/security/content-security-policy (or
-# see the specification: http://w3.org/TR/CSP).
+# read: https://www.html5rocks.com/en/tutorials/security/content-security-policy (or
+# see the specification: https://w3.org/TR/CSP).
 
 # <IfModule mod_headers.c>
 #    Header set Content-Security-Policy "script-src 'self'; object-src 'self'"
@@ -341,7 +341,7 @@ AddDefaultCharset utf-8
 # (the initial HTTP connection) for an attacker to downgrade or redirect the
 # request. The following header ensures that browser will ONLY connect to your
 # server via HTTPS, regardless of what the users type in the address bar.
-# http://www.html5rocks.com/en/tutorials/security/transport-layer-security/
+# https://www.html5rocks.com/en/tutorials/security/transport-layer-security/
 
 # <IfModule mod_headers.c>
 #    Header set Strict-Transport-Security max-age=16070400;
@@ -370,7 +370,7 @@ AddDefaultCharset utf-8
 <IfModule mod_deflate.c>
 
     # Force compression for mangled headers.
-    # http://developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping
+    # https://developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping
     <IfModule mod_setenvif.c>
         <IfModule mod_headers.c>
             SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
@@ -409,7 +409,7 @@ AddDefaultCharset utf-8
 # ------------------------------------------------------------------------------
 
 # Prevent some of the mobile network providers from modifying the content of
-# your site: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.5.
+# your site: https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.5.
 
 # <IfModule mod_headers.c>
 #    Header set Cache-Control "no-transform"
@@ -420,7 +420,7 @@ AddDefaultCharset utf-8
 # ------------------------------------------------------------------------------
 
 # Since we're sending far-future expires headers (see below), ETags can
-# be removed: http://developer.yahoo.com/performance/rules.html#etags.
+# be removed: https://developer.yahoo.com/performance/rules.html#etags.
 
 # `FileETag None` is not enough for every server.
 <IfModule mod_headers.c>
@@ -497,7 +497,7 @@ FileETag None
 # requests such as `/css/style.12345.css` to `/css/style.css`.
 
 # To understand why this is important and a better idea than `*.css?v231`, read:
-# http://stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring
+# https://stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring
 
 # <IfModule mod_rewrite.c>
 #    RewriteCond %{REQUEST_FILENAME} !-f
@@ -533,7 +533,7 @@ FileETag None
 # ------------------------------------------------------------------------------
 
 # Allow multiple requests to be sent over the same TCP connection:
-# http://httpd.apache.org/docs/current/en/mod/core.html#keepalive.
+# https://httpd.apache.org/docs/current/en/mod/core.html#keepalive.
 
 # Enable if you serve a lot of static content but, be aware of the
 # possible disadvantages!
