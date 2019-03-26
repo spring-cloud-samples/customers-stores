@@ -10,13 +10,13 @@
 
 ## Running Instructions
 - Before try to run the services, make sure you have Rabbitmq Server and MongoDB running on localhost.
-- Make sure you have [Spring Boot for Groovy installed] (http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#getting-started-gvm-cli-installation)
+- Make sure you have [Spring Boot for Groovy installed] (https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#getting-started-gvm-cli-installation)
 - Make sure [Spring Cloud CLI is installed] (https://github.com/spring-cloud/spring-cloud-cli)
 - To run the services, just execute "mvn spring-boot:run" in each project subfolder, and "spring run app.groovy" for the UI.
 
 ## IDE Support
 
-To use these projects in an IDE you will need the [project Lombok](http://projectlombok.org/features/index.html) agent. Full instructions can be found in the Lombok website. The
+To use these projects in an IDE you will need the [project Lombok](https://projectlombok.org/features/index.html) agent. Full instructions can be found in the Lombok website. The
 sign that you need to do this is a lot of compiler errors to do with
 missing methods and fields.
 
