@@ -1,5 +1,5 @@
 // Karma configuration
-// http://karma-runner.github.io/0.12/config/configuration-file.html
+// https://karma-runner.github.io/0.12/config/configuration-file.html
 // Generated on 2014-07-29 using
 // generator-karma 0.8.3
 
